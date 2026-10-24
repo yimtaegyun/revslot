@@ -95,5 +95,21 @@
         "size": 102608
       }
     ]
+  },
+  "versioned_migration_verification": {
+    "ci_url": "https://github.com/yimtaegyun/revslot/actions/runs/40092611551",
+    "commit": "9ae376e9c5741d13699f1dde74e8570c5166645b",
+    "conclusion": "success",
+    "postgres_service": "17",
+    "migration_file": "backend/migrations/001_recovery_state.sql",
+    "neon_remote_applied": false,
+    "log_excerpt": [
+      "2026-10-24T12:07:58.3419748Z 42 passed in 1.05s",
+      "2026-10-24T12:08:45.6860845Z   \u2713  1 [chromium] \u203a e2e/demo.spec.ts:8:1 \u203a cancellation, autonomous reprice, sandbox booking and merchant revenue (7.1s)",
+      "2026-10-24T12:08:46.4364187Z   \u2713  2 [chromium] \u203a e2e/demo.spec.ts:43:1 \u203a human approval gate and no below-floor override (741ms)",
+      "2026-10-24T12:08:47.0344330Z   \u2713  3 [chromium] \u203a e2e/demo.spec.ts:53:1 \u203a mobile viewport supports the marketplace and navigation (588ms)",
+      "2026-10-24T12:08:59.3027220Z   \u2713  4 [chromium] \u203a e2e/demo.spec.ts:66:1 \u203a server monitoring reprices with every browser page closed (12.3s)",
+      "2026-10-24T12:08:59.3509729Z   4 passed (22.4s)"
+    ]
   }
 }
