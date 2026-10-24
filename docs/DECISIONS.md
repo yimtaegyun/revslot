@@ -49,3 +49,13 @@ Reason: the work can be reviewed while external authorization is pending, withou
 Alternatives: final live recording before keys; script only.
 
 Trade-off: the review film is silent and not the eligible final submission take. Live-provider recording, public YouTube and final Devpost acceptance remain open.
+
+## D006 — Move the demo clock off the browser
+
+Decision: persist scheduled ticks and run them with a leased standalone FastAPI worker; expose an authenticated bounded tick for an explicitly configured external scheduler.
+
+Reason: browser intervals stopped monitoring when a judge closed the tab. SQL leases and revision/token fences protect restarts, overlapping workers and booking races.
+
+Alternatives: continue browser heartbeat; assume a serverless daemon is permanent; activate a paid scheduler without consent.
+
+Trade-off: serverless Play requires durable PostgreSQL and a real external scheduler. A stable standalone backend works without that added service. The pre-existing pricing model, policy objective, agent graph and UI layout are retained. This completes the requested monitoring behavior; it is not a new product feature or architecture rewrite.

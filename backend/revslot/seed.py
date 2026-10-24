@@ -38,6 +38,7 @@ def initial_state(run_id):
     return {
         "run_id": run_id, "revision": 0, "synthetic": True,
         "clock": "2026-10-30T17:00:00-04:00", "elapsed_minutes": 0,
+        "clock_control": {"running":False,"next_tick_at":None},
         "policy": PolicyConfig().model_dump(),
         "merchants": [m.model_dump() for m in MERCHANTS],
         "services": [s.model_dump() for s in SERVICES],

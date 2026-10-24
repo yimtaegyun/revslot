@@ -3,6 +3,7 @@ import json
 import os
 import sqlite3
 import time
+import secrets
 from contextlib import contextmanager
 from pathlib import Path
 
@@ -40,6 +41,7 @@ class Store:
         if self._initialized: return
         with self.connection() as c:
             c.execute("CREATE TABLE IF NOT EXISTS runs(id TEXT PRIMARY KEY, revision INTEGER NOT NULL, body TEXT NOT NULL, updated DOUBLE PRECISION NOT NULL)")
+            c.execute("CREATE TABLE IF NOT EXISTS clock_jobs(run_id TEXT PRIMARY KEY, due DOUBLE PRECISION NOT NULL, lease_token TEXT, lease_until DOUBLE PRECISION NOT NULL DEFAULT 0)")
         self._initialized=True
 
     def create(self,state):
@@ -55,13 +57,43 @@ class Store:
         if not row or time.time()-row[1]>86400: raise Missing("Demo session expired; load a fresh scenario")
         return json.loads(row[0])
 
-    def save(self,state,expected):
+    def save(self,state,expected,*,lease_token=None):
         state["revision"]=expected+1
         with self.connection() as c:
-            cur=c.execute(self.sql("UPDATE runs SET revision=?,body=?,updated=? WHERE id=? AND revision=?"),
-                (state["revision"],json.dumps(state),time.time(),state["run_id"],expected))
+            sql="UPDATE runs SET revision=?,body=?,updated=? WHERE id=? AND revision=?"
+            args=[state["revision"],json.dumps(state),time.time(),state["run_id"],expected]
+            if lease_token is not None:
+                sql+=" AND EXISTS(SELECT 1 FROM clock_jobs WHERE run_id=runs.id AND lease_token=? AND lease_until>?)"
+                args.extend([lease_token,time.time()])
+            cur=c.execute(self.sql(sql),args)
             if cur.rowcount!=1: raise Conflict("State changed; refresh before retrying")
+            control=state.get("clock_control",{})
+            if control.get("running"):
+                c.execute(self.sql("INSERT INTO clock_jobs(run_id,due,lease_until) VALUES(?,?,0) ON CONFLICT(run_id) DO UPDATE SET due=excluded.due"),
+                          (state["run_id"],control["next_tick_at"]))
+            else:
+                c.execute(self.sql("DELETE FROM clock_jobs WHERE run_id=?"),(state["run_id"],))
         return state
+
+    def claim_due(self,now,limit=3,lease_seconds=60):
+        """A committed conditional lease prevents two workers claiming the same clock."""
+        self.init()
+        claimed=[]
+        with self.connection() as c:
+            rows=c.execute(self.sql("SELECT run_id FROM clock_jobs WHERE due<=? AND lease_until<=? ORDER BY due LIMIT ?"),(now,now,limit)).fetchall()
+            for (rid,) in rows:
+                token=secrets.token_hex(16)
+                cur=c.execute(self.sql("UPDATE clock_jobs SET lease_token=?,lease_until=? WHERE run_id=? AND due<=? AND lease_until<=?"),
+                              (token,now+lease_seconds,rid,now,now))
+                if cur.rowcount==1: claimed.append((rid,token))
+        return claimed
+
+    def release_job(self,run_id,token,*,remove=False):
+        with self.connection() as c:
+            if remove:
+                c.execute(self.sql("DELETE FROM clock_jobs WHERE run_id=? AND lease_token=?"),(run_id,token))
+            else:
+                c.execute(self.sql("UPDATE clock_jobs SET lease_token=NULL,lease_until=0 WHERE run_id=? AND lease_token=?"),(run_id,token))
 
     @property
     def durability(self):

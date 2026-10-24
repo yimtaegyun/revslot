@@ -62,3 +62,23 @@ test('mobile viewport supports the marketplace and navigation',async({page})=>{
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBeTruthy();
  await capture(page,'08-mobile');
 });
+
+test('server monitoring reprices with every browser page closed',async({page,context})=>{
+ await page.goto('/');
+ await page.getByRole('button',{name:'Run cancellation scenario'}).click();
+ await expect(page.getByText('Recovery offer published',{exact:true})).toBeVisible();
+ await page.getByRole('button',{name:'Play accelerated demo clock'}).click();
+ await expect(page.getByRole('button',{name:'Pause demo clock'})).toBeVisible();
+ await page.close();
+ expect(context.pages()).toHaveLength(0);
+ await expect.poll(async()=>{
+  const response=await context.request.get('/api/state');
+  return (await response.json()).elapsed_minutes;
+ },{timeout:18000,intervals:[1000]}).toBeGreaterThanOrEqual(20);
+ const reopened=await context.newPage();
+ await reopened.goto('/');
+ await expect(reopened.getByText('$56',{exact:true}).first()).toBeVisible();
+ await expect(reopened.getByText('Strategy updated',{exact:true})).toBeVisible();
+ await reopened.getByRole('button',{name:'Pause demo clock'}).click();
+ await expect(reopened.getByRole('button',{name:'Play accelerated demo clock'})).toBeVisible();
+});

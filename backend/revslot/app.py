@@ -3,6 +3,8 @@ import json
 import os
 import re
 import secrets
+import time
+from contextlib import asynccontextmanager
 from datetime import datetime,timedelta
 from pathlib import Path
 from fastapi import FastAPI,Request,Response,HTTPException
@@ -14,8 +16,20 @@ from .pricing import remaining_hours,optimize
 from .providers import provider_status
 from .audit import append_action,verify_actions
 from .agents.orchestrator import recover,get_slot
+from .monitoring import advance_clock,has_active,stop_clock,tick_due,monitoring_mode,worker_loop
 
-app=FastAPI(title="Revslot Recovery API",version="0.1.0",description="Synthetic sandbox only. No real payments or outbound messages.")
+@asynccontextmanager
+async def lifespan(application):
+    task=asyncio.create_task(worker_loop(lambda:store)) if monitoring_mode()=="worker" else None
+    try:
+        yield
+    finally:
+        if task:
+            task.cancel()
+            await asyncio.gather(task,return_exceptions=True)
+
+
+app=FastAPI(lifespan=lifespan,title="Revslot Recovery API",version="0.1.0",description="Synthetic sandbox only. No real payments or outbound messages.")
 store=Store()
 COOKIE="revslot_run"
 
@@ -50,6 +64,8 @@ def public_state(state):
     state.pop("customers",None)
     state["provider_config"]=provider_status()
     state["durability"]=store.durability
+    state.setdefault("clock_control",{"running":False,"next_tick_at":None})
+    state["monitoring_mode"]=monitoring_mode()
     cancelled=[s for s in state["slots"] if s["status"]!="booked"]
     recovered=sum(b["price_cents"] for b in state["bookings"])
     potential=sum(s["original_price_cents"] for s in cancelled)
@@ -65,12 +81,23 @@ def public_state(state):
 @app.get("/api/health")
 async def health():
     return {"status":"ok","synthetic":True,"providers":provider_status(),"durability":store.durability,
-            "submission_ready":False,"note":"Authenticated inference evidence, public video, and final submission remain external gates."}
+            "monitoring_mode":monitoring_mode(),"submission_ready":False,"note":"Authenticated inference evidence, public video, and final submission remain external gates."}
 
 
 @app.post("/api/session")
 async def session(request:Request,response:Response):
     check_origin(request)
+    previous=request.cookies.get(COOKIE,"")
+    if re.fullmatch(r"[0-9a-f]{40}",previous):
+        for retry in range(3):
+            try:
+                old=store.load(previous)
+                if old.get("clock_control",{}).get("running"):
+                    revision=old["revision"]; stop_clock(old); store.save(old,revision)
+                break
+            except Missing: break
+            except Conflict:
+                if retry==2: raise
     state=initial_state(secrets.token_hex(20))
     store.create(state)
     response.set_cookie(COOKIE,state["run_id"],httponly=True,secure=request.url.scheme=="https" or request.headers.get("x-forwarded-proto")=="https",samesite="lax",max_age=86400,path="/")
@@ -98,20 +125,17 @@ async def action(body:ActionRequest,request:Request,response:Response):
         slot["status"]="recovering"; state["cancellation_ids"].append(event)
         append_action(state,"Orchestrator","cancellation.receive","Cancellation detected",f"{slot['id']}: ${slot['original_price_cents']/100:.2f} of expiring inventory.",slot_id=slot["id"])
         state=await recover(state,slot["id"])
+    elif body.action=="clock":
+        if body.running and monitoring_mode()=="manual":
+            raise HTTPException(503,"Automatic clock needs a running backend worker or a configured external scheduler with PostgreSQL")
+        if body.running and not has_active(state): raise Conflict("Cancel an appointment before starting the demo clock")
+        state["clock_control"]={"running":body.running,"next_tick_at":time.time()+10 if body.running else None}
+        append_action(state,"Merchant","clock.control","Server demo clock started" if body.running else "Server demo clock paused",
+                      "Server-owned 120x demo clock; continues without an open browser while its backend worker/scheduler runs.")
     elif body.action=="advance":
-        state["clock"]=(datetime.fromisoformat(state["clock"])+timedelta(minutes=body.minutes)).isoformat()
-        state["elapsed_minutes"]+=body.minutes
-        for current in state["slots"]:
-            if current["status"] not in {"recovering","approval"}: continue
-            hours=remaining_hours(current,state["clock"])
-            if hours<=0:
-                current["status"]="expired"
-                if current["id"] in state["offers"]: state["offers"][current["id"]]["published"]=False
-                append_action(state,"Recovery operator","clock.expire","Slot expired","The appointment start has passed. Booking and offers are closed.",slot_id=current["id"])
-            elif state["elapsed_minutes"]-state["last_evaluated"].get(current["id"],0)>=20:
-                append_action(state,"Recovery operator","monitor.check","No booking — reassessing",f"{body.minutes} simulated minutes advanced; observing an actual unsold sandbox slot.",slot_id=current["id"])
-                stage=sum(a["slot_id"]==current["id"] for a in state["attempts"])
-                state=await recover(state,current["id"],stage)
+        state=await advance_clock(state,body.minutes)
+        if state.get("clock_control",{}).get("running"):
+            state["clock_control"]["next_tick_at"]=time.time()+10
     elif body.action=="approve":
         offer=state["offers"].get(slot["id"])
         if not offer or offer["revision"]!=body.offer_revision: raise Conflict("Offer changed; review the latest revision")
@@ -153,6 +177,7 @@ async def action(body:ActionRequest,request:Request,response:Response):
         for customer in state["customers"]:
             if customer["id"]==body.customer_id: customer["notifications_opt_in"]=False
         append_action(state,"Consumer","notifications.optout","Notification preference saved","This synthetic profile is excluded from future direct notifications.")
+    if not has_active(state): stop_clock(state)
     store.save(state,expected)
     response.headers["Cache-Control"]="no-store"
     return public_state(state)
@@ -187,3 +212,14 @@ async def events(request:Request):
             else: yield ": heartbeat\n\n"
             await asyncio.sleep(1)
     return StreamingResponse(stream(),media_type="text/event-stream",headers={"Cache-Control":"no-store","X-Accel-Buffering":"no"})
+
+
+@app.get("/api/jobs/tick")
+async def scheduled_tick(request:Request):
+    secret=os.getenv("CRON_SECRET","")
+    if not secret: raise HTTPException(503,"External scheduler is not configured")
+    if not secrets.compare_digest(request.headers.get("authorization",""),"Bearer "+secret):
+        raise HTTPException(401,"Scheduler authorization required")
+    if os.getenv("VERCEL") and store.durability!="postgres":
+        raise HTTPException(503,"Serverless scheduling requires durable PostgreSQL")
+    return await tick_due(store)

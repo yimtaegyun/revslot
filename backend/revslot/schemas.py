@@ -154,13 +154,14 @@ class AgentPlan(StrictModel):
 
 
 class ActionRequest(StrictModel):
-    action: Literal["cancel", "advance", "approve", "book", "policy", "optout"]
+    action: Literal["cancel", "advance", "approve", "book", "policy", "optout", "clock"]
     slot_id: str = "slot-1"
     event_id: str | None = Field(None, max_length=80)
     minutes: int = Field(20, ge=1, le=60)
     offer_revision: int | None = Field(None, ge=0)
     customer_id: str = Field("demo-guest", max_length=40)
     policy: PolicyConfig | None = None
+    running: bool | None = None
 
     @model_validator(mode="after")
     def validate_action(self):
@@ -168,4 +169,6 @@ class ActionRequest(StrictModel):
             raise ValueError("Current offer_revision is required")
         if self.action == "policy" and self.policy is None:
             raise ValueError("Policy is required")
+        if self.action == "clock" and self.running is None:
+            raise ValueError("Clock running state is required")
         return self
