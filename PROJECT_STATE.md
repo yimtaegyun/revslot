@@ -20,11 +20,13 @@ Public full-stack app, durable hosted state and browser-independent recovery mon
 Connect live provider access using secure account flows; capture factual runtime evidence and final submission materials.
 
 ## Blocked
-No Nebius or Tavily server key. User selected Google through secure browserAuth. The flow reached Nebius first-account contact details, then an email-verification modal. Signup/email verification and legal acceptance require user completion; no API key created. Do not inspect OTP values or mark the account ready before fresh target-domain evidence.
+No Nebius or Tavily server key. Google/email authentication and creation of Nebius `default-project` were positively observed after the user completed verification. The next observed screen requires individual billing details, a bank card and acceptance of the Services Agreement. Those steps were not completed by the agent; no card, address, legal acceptance, payment or API key was submitted. Official billing documentation confirms that a card is mandatory during onboarding, including when promotional credits are available. See docs/NEBIUS_ACCESS_AND_CREDITS.md.
+
+On the latest continuation, the cloud browser returned no tabs and two subsequent browser operations timed out. Current billing completion cannot be reverified; this is a browser availability failure, not evidence of site bot detection. Production Vercel environment metadata was rechecked: database/scheduler variables are present; NEBIUS_API_KEY and TAVILY_API_KEY are absent. Do not repeat account creation, authentication grants or billing submission speculatively.
 
 ## Next 5 Actions
-1. Let the user finish Nebius email verification and personally review/accept signup terms, then inspect credits/access.
-2. Obtain the user-authorized key, store only server-side, and verify actual /models plus NVIDIA Nemotron structured inference.
+1. Have the user personally complete or decline the observed Nebius billing/card/Services Agreement step; the official $25 credit application is available but was not submitted. Confirm account activation and available credit before inference.
+2. Create/connect a user-authorized key only at the actual credential step, store only server-side, and verify actual /models plus NVIDIA Nemotron structured inference. Never request a secret in chat.
 3. Connect optional real Tavily search; save non-secret runtime evidence and observed sponsor feedback.
 4. Record the final live-provider video under3min, publish accessible YouTube and recheck all judge URLs.
 5. Finalize Devpost, obtain user's legal acceptance and submit before deadline. Reverify official rules on submission day.
@@ -45,3 +47,5 @@ Not submitted and not fully eligible. Actual NVIDIA-on-Nebius inference, optiona
 
 ## Last Tests
 CI https://github.com/yimtaegyun/revslot/actions/runs/40095746361 at d6a6a06a...:45 Python tests with PostgreSQL17 passed in1.19s;6 Node scheduler tests, production build/TypeScript and4 Chromium tests passed (23.7s). Local44 passed/1 PostgreSQL skipped. Anonymous production retention, authenticated wake, browser-independent repricing, booking, idle exit, SQL job count, forged-request rejection and current error/fatal scan all passed. Details: docs/NEON_DEPLOYMENT_EVIDENCE.json and docs/QA_REPORT.md.
+
+Latest continuation: anonymous GET /api/health returned200/ok, durability=postgres and monitoring_mode=external_scheduler; both live providers remain configured=false/verified=false and submission_ready=false. This read-only check does not re-prove a new booking or inference. Seven changed Markdown files passed relative-link and credential-pattern checks; no application code changed.

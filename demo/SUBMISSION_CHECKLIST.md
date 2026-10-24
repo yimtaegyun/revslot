@@ -8,6 +8,8 @@
 - [x] Synthetic generator, model card, independent-seed evaluation and negative results retained
 - [x] Frontend production build/type checks passed locally
 - [x] LICENSE / README / environment example / architecture / submission text supplied
+- [x] Nebius Google/email authentication and default project observed
+- [ ] User completed required Nebius billing/card activation and legal acceptance; usable credit verified
 - [ ] Successful real NVIDIA runtime call through Nebius
 - [ ] Real Tavily call and meaningful cited use if bonus is pursued
 - [x] Public rules-preview URL accessible anonymously; real browser/API reservation flow verified (live AI still open)

@@ -37,3 +37,11 @@ Devpost registration/submission accepts a contract and publicity terms. The user
 No runtime credential is configured yet. A local rule-based demonstration does not meet the inference requirement. Keep the final eligibility checkbox open until authenticated runtime evidence is captured.
 
 Recheck this page on submission day. Preserve free test access through 2026-12-15 (Pacific), the posted end of judging.
+
+## Account provisioning and credits — checked 2026-10-25 KST
+
+The [official resources](https://nebiusglobalaihackathon.devpost.com/resources) offer a $25 Token Factory credit application with activation code `NEBIUS-DEVPOST-GLOBAL26`, plus separate Builders Program credits. Application, grant and balance redemption are distinct steps; none has been completed here.
+
+[Token Factory billing documentation](https://docs.tokenfactory.nebius.com/other-capabilities/billing-new) requires a bank card to finish onboarding. Promotional credits do not establish a waiver of this requirement. Negative balances or the configured billing threshold can trigger automatic card charges. User authentication is confirmed; billing activation and real model inference remain unverified.
+
+The [FAQ](https://nebiusglobalaihackathon.devpost.com/details/faqs) directs missing-country/credit cases to Nebius support and does not approve using another model provider to bypass the runtime requirement. Do not invent a region/address or substitute Neon AI Gateway. [Access checklist](NEBIUS_ACCESS_AND_CREDITS.md).

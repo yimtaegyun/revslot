@@ -61,6 +61,8 @@ The server queries Token Factory `/models`, selects an available NVIDIA Nemotron
 
 Without a key, the labeled rules preview remains usable. Configured inference failure, invalid output or timeout produces a review-required recommendation. Catalogue + inference share a ten-second budget; optional context adds at most four seconds. **Live latency is unmeasured until credentials are connected.** [Runtime evidence](docs/RUNTIME_EVIDENCE.json).
 
+Account authentication is confirmed; mandatory billing activation and server-key connection remain open. Official promotional credits have not been claimed. [Account and credit checklist](docs/NEBIUS_ACCESS_AND_CREDITS.md).
+
 ## Tavily
 
 Optional runtime search retrieves/caches public local-event sources and displays their URLs. Snippets are untrusted. A tiny external feature is bounded to ±0.03 and requires explicit scenario-date grounding; otherwise its price signal is zero. Failure does not break booking. Bonus readiness stays open until a real call is captured.
