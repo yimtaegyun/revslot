@@ -21,3 +21,7 @@ The README hero is a crop of the actual recovered screenshot. Other source captu
 ## Server monitoring update
 
 [CI 40089803664](https://github.com/yimtaegyun/revslot/actions/runs/40089803664) verified42 Python tests (real PostgreSQL 17), production build and 4 Chromium cases. The new case closes all pages, waits while the server reprices, then reopens to confirm $56. [Before closure](server-clock-before-close.webm) and [after reopening](server-clock-after-reopen.webm) are separate unedited page recordings; the interval with no browser page is established by the test assertion and read-only state observation, not a fabricated continuous screen recording. The earlier screenshot set remains tied to its original capture commit.
+
+## Public browser verification
+
+[Public preview](https://revslot-one.vercel.app/) passed an anonymous API sequence and an independent visible browser reservation flow. [Actual live-browser result](screenshots/11-live-browser.jpg), [deployment evidence](../docs/LIVE_DEPLOYMENT_EVIDENCE.json). Public mode uses rules preview, ephemeral SQLite and manual advance; the standalone worker behavior proven above is not claimed for this serverless host.

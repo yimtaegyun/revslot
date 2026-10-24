@@ -1,4 +1,6 @@
-# Revslot — submission-ready text draft, pending live gates
+# Revslot — submission text draft, pending live gates
+
+Public preview: https://revslot-one.vercel.app/ . Source: https://github.com/yimtaegyun/revslot . Current public mode is labeled rules preview, ephemeral state and manual clock; this draft is not submitted.
 
 **Tagline:** An autonomous revenue recovery agent for cancelled beauty and wellness appointments.
 

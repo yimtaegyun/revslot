@@ -4,9 +4,9 @@
 
 Cancelled time. Recovered value.
 
-[Source](https://github.com/yimtaegyun/revslot) · [Browser evidence](demo/README.md) · [Architecture](docs/ARCHITECTURE.md) · [Evaluation](docs/EVALUATION_REPORT.md) · [Demo script](demo/VIDEO_SCRIPT.md) · [Submission draft](demo/DEVPOST.md)
+[Live preview](https://revslot-one.vercel.app/) · [Source](https://github.com/yimtaegyun/revslot) · [Browser evidence](demo/README.md) · [Architecture](docs/ARCHITECTURE.md) · [Evaluation](docs/EVALUATION_REPORT.md) · [Demo script](demo/VIDEO_SCRIPT.md) · [Submission draft](demo/DEVPOST.md)
 
-**Build status:** [CI passed](https://github.com/yimtaegyun/revslot/actions/runs/40089803664): 42 Python tests including real PostgreSQL 17, production build/TypeScript and 4 complete browser tests, including repricing after every browser page closes. Nine actual screenshots and the raw browser recording are included. Live Nebius/NVIDIA inference, Tavily, public deployment and the final submission take remain gates. The no-key mode is an explicitly labeled **deterministic preview**, not live AI or a finished eligible submission. [Current state](PROJECT_STATE.md).
+**Build status:** [CI passed](https://github.com/yimtaegyun/revslot/actions/runs/40089803664): 42 Python tests including real PostgreSQL 17, production build/TypeScript and 4 complete browser tests, including repricing after every browser page closes. Nine actual screenshots and the raw browser recording are included. The [public preview](https://revslot-one.vercel.app/) passed anonymous API and real browser reservation checks. It uses ephemeral SQLite and manual time advance. Live Nebius/NVIDIA, Tavily, durable hosted monitoring and the final submission take remain gates. The no-key mode is an explicitly labeled **deterministic preview**, not live AI or a finished eligible submission. [Current state](PROJECT_STATE.md).
 
 ![Actual browser result: sandbox booking records $56 and 70% of slot value](demo/screenshots/hero-recovered.png)
 

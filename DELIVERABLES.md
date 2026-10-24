@@ -6,7 +6,7 @@ This index distinguishes a concrete implementation/draft from verified external 
 |---|---|
 | Final name / pitch | Revslot — autonomous recovery for cancelled beauty/wellness appointments |
 | Public source | https://github.com/yimtaegyun/revslot (code, research and documentation published; verified commit in PROJECT_STATE.md) |
-| Live app URL | Blocked on Vercel account-scope authorization and hosted runtime verification |
+| Live app URL | https://revslot-one.vercel.app/ — anonymous API and browser workflow verified; labeled rules preview, ephemeral state/manual clock |
 | README | [README.md](README.md) |
 | Architecture / agent roles | [Architecture](docs/ARCHITECTURE.md), [SVG](docs/architecture.svg), [workflow](docs/AGENT_WORKFLOW.md) |
 | Screenshots / browser video | [Nine actual inspected captures and raw workflow recording](demo/README.md); [passing CI](https://github.com/yimtaegyun/revslot/actions/runs/40089803664) |

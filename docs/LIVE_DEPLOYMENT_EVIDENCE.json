@@ -1,0 +1,43 @@
+{
+  "verified_at_utc": "2026-10-24T11:49:12.052306+00:00",
+  "project_id": "prj_BWTzn2W1WebpfwmOVUldqvTxOC3y",
+  "deployment_id": "dpl_4DHbjT2Ma8RB1WNoqBp42yzc3fd2",
+  "url": "https://revslot-one.vercel.app/",
+  "state": "READY",
+  "source_commit": "875c8f59ba8517ed798e2b80546a274c792db0d5",
+  "source_tree": "eadff2161e9197dba60a3dcc06f445d1a85c9fd3",
+  "source_bundle_files": 49,
+  "source_mode": "exact reviewed source-file upload after git_info_fail",
+  "anonymous_health_status": 200,
+  "anonymous_workflow": {
+    "session_status": 200,
+    "cancel_status": 200,
+    "initial_price_cents": 6400,
+    "advance_status": 200,
+    "repriced_cents": 5600,
+    "radius_km": 6,
+    "booking_status": 200,
+    "recovered_cents": 5600,
+    "recovery_rate": 0.7
+  },
+  "browser_ui_workflow_verified": true,
+  "public_login_required": false,
+  "monitoring_mode": "manual",
+  "durability": "ephemeral_sqlite",
+  "live_nebius_verified": false,
+  "live_tavily_verified": false,
+  "submission_ready": false,
+  "screenshot": {
+    "path": "demo/screenshots/11-live-browser.jpg",
+    "sha256": "b4d03047c063f6406de1612ad2d1b15baf494cd865ad89d342b059d6f92b9b14"
+  },
+  "runtime_error_scan": {
+    "deployment_id": "dpl_4DHbjT2Ma8RB1WNoqBp42yzc3fd2",
+    "window_utc": "2026-10-24T11:37:02.204Z to2026-10-24T11:52:02.204Z",
+    "levels": [
+      "error",
+      "fatal"
+    ],
+    "matching_logs": 0
+  }
+}

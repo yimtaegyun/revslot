@@ -10,7 +10,7 @@
 - [x] LICENSE / README / environment example / architecture / submission text supplied
 - [ ] Successful real NVIDIA runtime call through Nebius
 - [ ] Real Tavily call and meaningful cited use if bonus is pursued
-- [ ] Live hosted URL accessible to anonymous judges
+- [x] Public rules-preview URL accessible anonymously; real browser/API reservation flow verified (live AI and durable monitoring still open)
 - [ ] Durable hosted storage verified
 - [x] Browser E2E/screenshots verified; latest4 cases include repricing with every browser page closed
 - [x] Standalone server monitoring and real PostgreSQL SQL/lease/CAS integration verified in CI
