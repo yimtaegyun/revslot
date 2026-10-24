@@ -9,7 +9,7 @@ This index distinguishes a concrete implementation/draft from verified external 
 | Live app URL | Blocked on Vercel account-scope authorization and hosted runtime verification |
 | README | [README.md](README.md) |
 | Architecture / agent roles | [Architecture](docs/ARCHITECTURE.md), [SVG](docs/architecture.svg), [workflow](docs/AGENT_WORKFLOW.md) |
-| Screenshots / browser video | [Nine actual inspected captures and raw workflow recording](demo/README.md); [passing CI](https://github.com/yimtaegyun/revslot/actions/runs/40064620041) |
+| Screenshots / browser video | [Nine actual inspected captures and raw workflow recording](demo/README.md); [passing CI](https://github.com/yimtaegyun/revslot/actions/runs/40089803664) |
 | Synthetic generator / dataset | [Generator](scripts/generate_data.py), [data card](data/DATA_CARD.json), compressed data in `data/` |
 | Evaluation / comparison | [Report](docs/EVALUATION_REPORT.md), [results](simulation/results.json), development failures retained |
 | Demo scenario / script / shots | [Scenario](docs/DEMO_SCENARIO.md), [2:50 script](demo/VIDEO_SCRIPT.md), [shots](demo/SHOT_LIST.md) |

@@ -13,3 +13,7 @@ SQLite `/tmp` is an explicitly ephemeral preview fallback. Use PostgreSQL for re
 Public judge access is required. The newly created project's protection defaults must be deliberately reviewed for that requested audience; no domain was purchased and no protection bypass link was invented. Verify the final URL anonymously after deployment.
 
 Keep free judge access available through the official end of judging. Final Devpost registration/submission accepts terms and publicity permissions; the user must perform that acceptance.
+
+## Monitoring deployment requirement
+
+A standalone FastAPI backend with a persistent SQLite volume or PostgreSQL runs the included server worker automatically. It remains active without an open browser while that host runs. For Vercel serverless, Play remains disabled until a real external scheduler, CRON_SECRET, REVSlot_EXTERNAL_TICK=1 and PostgreSQL are configured. Hobby Cron runs once per day and cannot drive this 10-second accelerated demonstration. No paid scheduler was activated. See BACKGROUND_MONITORING.md.

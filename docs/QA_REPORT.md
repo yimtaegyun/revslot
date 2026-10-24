@@ -1,5 +1,7 @@
 # Verification status
 
+Latest verified code: [CI 40089803664](https://github.com/yimtaegyun/revslot/actions/runs/40089803664) passed **42 Python tests, real PostgreSQL 17, production build/TypeScript and 4 Chromium cases**, including server repricing with every browser page closed. Earlier evidence below is retained with its original capture provenance.
+
 Verified locally on 2026-10-24:
 
 - **34 pytest tests passed**, including price/margin/cap constraints, probability/time behavior, high-demand full price, opt-in matching, strict schemas, cancellation idempotency, full recovery, actual repricing/reach, same-slot pricing, human approval, stale/double booking, expiry, origin/session isolation, atomic competing writes, audit modification detection, provider parser failures and total inference timeout.
@@ -13,6 +15,12 @@ The first GitHub CI run failed before hydration because development-resource req
 
 The 1920×1080, 170-second captioned review film uses actual inspected captures. It is silent and retains a rules-preview disclosure throughout. It is **not** the final live-inference/public-YouTube submission video. No generated mock UI or fabricated provider call is substituted for browser evidence.
 
-Docker and PostgreSQL have not been executed/connected. Vercel project creation succeeded, but account-scope access denied storage linking; no successful live deployment is recorded. Video/public YouTube/Devpost remain open gates.
+Docker has not been executed; the hosted database is unconnected. PostgreSQL 17 SQL was subsequently verified in CI (latest section below). Vercel project creation succeeded, but account-scope access denied storage linking; no successful live deployment is recorded. Video/public YouTube/Devpost remain open gates.
 
 Regression after subsequent changes must update this report and PROJECT_STATE.md. Check CI artifacts for actual merchant, offer, repricing, marketplace, recovery, analytics, guardrail and mobile screenshots.
+
+## Latest: server monitoring and real PostgreSQL
+
+[CI 40089803664](https://github.com/yimtaegyun/revslot/actions/runs/40089803664) at commit1fc77683a1a73f05e044636a3ff7e429e95b5a4d passed 42 Python tests in 1.52 seconds, including a real PostgreSQL 17 service. Production build/TypeScript passed;4 Chromium tests passed in 23.7 seconds. The new browser case started the server clock, closed every page, observed repricing through read-only API polling and reopened the dashboard to confirm $56 before pausing it. That case took 12.3 seconds.
+
+Persistence/restart, competing leases, expired-token fencing, CAS, retry, pause/reset/booking termination, expiry catch-up and scheduler authorization are tested. Hosted PostgreSQL is still unconnected; this result verifies the SQL against a real CI database, not production provisioning. Docker and public deployment remain unexecuted. Old screenshot/video files remain explicitly tied to their original verified capture commit. The numerical evaluation and live-provider gates are unchanged.

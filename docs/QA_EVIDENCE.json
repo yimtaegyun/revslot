@@ -63,5 +63,37 @@
       "sha256": "c413c23d9088c3535065c30c54406bd893893e547258d34084460244fa99d4f7",
       "size": 761311
     }
-  ]
+  ],
+  "monitoring_update": {
+    "commit": "1fc77683a1a73f05e044636a3ff7e429e95b5a4d",
+    "ci_url": "https://github.com/yimtaegyun/revslot/actions/runs/40089803664",
+    "conclusion": "success",
+    "python_tests": 42,
+    "chromium_tests": 4,
+    "real_postgres_service": "17",
+    "browser_pages_closed_reprice_verified": true,
+    "log_excerpt": [
+      "2026-10-24T11:25:51.1089620Z 42 passed in 1.52s",
+      "2026-10-24T11:26:43.4511608Z   \u2713  1 [chromium] \u203a e2e/demo.spec.ts:8:1 \u203a cancellation, autonomous reprice, sandbox booking and merchant revenue (7.2s)",
+      "2026-10-24T11:26:44.2360974Z   \u2713  2 [chromium] \u203a e2e/demo.spec.ts:43:1 \u203a human approval gate and no below-floor override (772ms)",
+      "2026-10-24T11:26:44.8371609Z   \u2713  3 [chromium] \u203a e2e/demo.spec.ts:53:1 \u203a mobile viewport supports the marketplace and navigation (589ms)",
+      "2026-10-24T11:26:57.1106128Z   \u2713  4 [chromium] \u203a e2e/demo.spec.ts:66:1 \u203a server monitoring reprices with every browser page closed (12.3s)",
+      "2026-10-24T11:26:57.1783225Z   4 passed (23.7s)"
+    ],
+    "production_database_connected": false,
+    "live_nebius_verified": false,
+    "live_tavily_verified": false,
+    "raw_page_recordings": [
+      {
+        "path": "demo/server-clock-before-close.webm",
+        "sha256": "8d3a86dc30f5fe54d321c7b49ec995e127d8e2619e10576deba468ed42e427d5",
+        "size": 95931
+      },
+      {
+        "path": "demo/server-clock-after-reopen.webm",
+        "sha256": "a1de030803526e5a9cde265717977f3da883050798aa97dea30ce4ef7cb3a36f",
+        "size": 102608
+      }
+    ]
+  }
 }

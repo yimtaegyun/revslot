@@ -16,4 +16,6 @@ No paid scheduler or plan was activated. [Official Vercel Cron limits](https://v
 
 ## Verification
 
-Python tests cover persistence/restart, two competing workers, token fencing, pause/reset/booking termination, expiry catch-up, failed-tick retry and protected scheduler access. CI provisions a real PostgreSQL17 service to test its SQL, competing claims, CAS and repricing. A separate browser case starts Play, closes every page, observes state using read-only API requests and reopens the merchant view to verify $56 repricing. Check QA_REPORT.md for actual run status rather than assuming these tests passed because they exist.
+Python tests cover persistence/restart, two competing workers, token fencing, pause/reset/booking termination, expiry catch-up, failed-tick retry and protected scheduler access. CI provisions a real PostgreSQL 17 service to test its SQL, competing claims, CAS and repricing. A separate browser case starts Play, closes every page, observes state using read-only API requests and reopens the merchant view to verify $56 repricing. Check QA_REPORT.md for actual run status rather than assuming these tests passed because they exist.
+
+Verified: [CI 40089803664](https://github.com/yimtaegyun/revslot/actions/runs/40089803664),42 Python tests including PostgreSQL 17 and 4 Chromium cases. This is real test execution; hosted scheduling and deployment remain unverified.

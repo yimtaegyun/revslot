@@ -15,7 +15,9 @@ flowchart TD
   Context --> Guard
   Guard --> Review["Merchant review when required"]
   Guard --> Publish["Shared offer + sandbox inbox"]
-  Publish --> Monitor["Clock observes unsold state"]
+  Publish --> Jobs["Persisted clock job + lease"]
+  Jobs --> Monitor["Server worker observes unsold state"]
+  Jobs --> Store
   Monitor --> Graph
   Publish --> Booking["Revision-checked reservation"]
   Review --> Publish
@@ -42,3 +44,5 @@ The UI receives concise tool records, not provider reasoning. Hash-linked audit 
 | Stale/concurrent write | 409 and refresh |
 | API offline | Readable error and retry |
 | SSE failure | Polling fallback |
+
+The standalone FastAPI lifespan owns the demo-clock worker. Persisted next-tick jobs survive restarts; revision/token fences prevent stale commits. Vercel functions require a real external scheduler and PostgreSQL instead. No browser heartbeat drives clock progression. See [background monitoring](BACKGROUND_MONITORING.md).

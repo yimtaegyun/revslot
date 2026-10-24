@@ -15,4 +15,4 @@ State path: booked → recovering → recovered. Review adds recovering → appr
 
 The preview planner is deterministic and labeled. The live planner must be NVIDIA Nemotron served by Nebius. Benchmarks deliberately exclude LLM calls and compare numerical policies only.
 
-The accelerated clock is a sandbox tool; a browser heartbeat advances it. This version does not monitor forever after browsers close. Outcomes are stored, but automatic retraining/online learning is **not** implemented. New production models require separate data-quality, calibration, causal and out-of-sample checks.
+The accelerated clock is a server-owned sandbox tool. Persisted jobs and a leased standalone worker continue reassessment after every browser closes, recover after restart, and stop on pause/booking/expiry. Serverless requires an explicitly configured external scheduler and durable PostgreSQL; otherwise Play is disabled. See [monitoring](BACKGROUND_MONITORING.md). Outcomes are stored, but automatic retraining/online learning is **not** implemented. New production models require separate data-quality, calibration, causal and out-of-sample checks.

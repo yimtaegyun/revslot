@@ -6,7 +6,7 @@ Cancelled time. Recovered value.
 
 [Source](https://github.com/yimtaegyun/revslot) · [Browser evidence](demo/README.md) · [Architecture](docs/ARCHITECTURE.md) · [Evaluation](docs/EVALUATION_REPORT.md) · [Demo script](demo/VIDEO_SCRIPT.md) · [Submission draft](demo/DEVPOST.md)
 
-**Build status:** [CI passed](https://github.com/yimtaegyun/revslot/actions/runs/40064620041): 34 Python tests, production build/TypeScript and 3 complete browser tests. Nine actual screenshots and the raw browser recording are included. Live Nebius/NVIDIA inference, Tavily, public deployment and the final submission take remain gates. The no-key mode is an explicitly labeled **deterministic preview**, not live AI or a finished eligible submission. [Current state](PROJECT_STATE.md).
+**Build status:** [CI passed](https://github.com/yimtaegyun/revslot/actions/runs/40089803664): 42 Python tests including real PostgreSQL 17, production build/TypeScript and 4 complete browser tests, including repricing after every browser page closes. Nine actual screenshots and the raw browser recording are included. Live Nebius/NVIDIA inference, Tavily, public deployment and the final submission take remain gates. The no-key mode is an explicitly labeled **deterministic preview**, not live AI or a finished eligible submission. [Current state](PROJECT_STATE.md).
 
 ![Actual browser result: sandbox booking records $56 and 70% of slot value](demo/screenshots/hero-recovered.png)
 
@@ -25,7 +25,7 @@ Waitlists and yield management already exist. ClassPass describes ML demand prot
 5. Advance 20 demo minutes without booking. The workflow observes actual unsold application state, then reassesses. The seeded preview expands to 6 km / 24 profiles and chooses $56.
 6. Confirm the consumer reservation. An atomic update recovers the slot and changes booked gross revenue to $56: 70% of original slot value.
 
-These are calculated results. The natural-fill percentage comes from the fitted model, not the brief’s illustrative 18%. No payment or real message is sent. Play mode advances 20 simulated minutes every ten real seconds and is visibly labeled.
+These are calculated results. The natural-fill percentage comes from the fitted model, not the brief’s illustrative 18%. No payment or real message is sent. Play mode advances 20 simulated minutes every ten real seconds on the server and is visibly labeled. On a running standalone backend, it continues when all browser pages close. [Persistence and serverless boundary](docs/BACKGROUND_MONITORING.md).
 
 ## Agent architecture
 
@@ -100,7 +100,7 @@ Next.js, TypeScript, Tailwind, shadcn button, Lucide; FastAPI, Pydantic, LangGra
 
 ## Limitations and roadmap
 
-No merchant pilot, real calendar/POS, notifications or payments. Demo monitoring uses a browser heartbeat; durable unattended monitoring needs scheduling/queues. Production merchant authentication, abuse quotas, calibrated causal elasticity and incremental-revenue experiments remain future work. Hosted `/tmp` SQLite can reset on cold start; use PostgreSQL for durable judging access.
+No merchant pilot, real calendar/POS, notifications or payments. The accelerated clock runs on a persisted, leased backend worker and continues after browser closure; serverless requires an external scheduler plus PostgreSQL, otherwise Play is disabled. Production merchant authentication, abuse quotas, calibrated causal elasticity and incremental-revenue experiments remain future work. Hosted `/tmp` SQLite can reset on cold start; use PostgreSQL for durable judging access.
 
 Next: verified runtime/public demo → opt-in beauty/wellness pilot → calendar/POS adapters → fitness/PT → restaurant/hospitality. Medical appointments remain excluded. Performance-fee/SaaS terms are hypotheses; no unsupported percentage is selected. [Competitive answers](docs/COMPETITIVE_FAQ.md).
 

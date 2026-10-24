@@ -12,7 +12,8 @@
 - [ ] Real Tavily call and meaningful cited use if bonus is pursued
 - [ ] Live hosted URL accessible to anonymous judges
 - [ ] Durable hosted storage verified
-- [x] Browser E2E/screenshots verified in successful CI; nine captures inspected
+- [x] Browser E2E/screenshots verified; latest4 cases include repricing with every browser page closed
+- [x] Standalone server monitoring and real PostgreSQL SQL/lease/CAS integration verified in CI
 - [ ] Polished demo video under 3 minutes; public YouTube access verified
 - [ ] Sponsor feedback based on actual runtime use
 - [ ] All final links, buttons and incognito access checked

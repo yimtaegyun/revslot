@@ -8,7 +8,7 @@
 
 **Why AI?** Arithmetic, ranking and policy do not need it. Context interpretation and adapting an allowlisted plan may benefit from a language model. That benefit requires empirical validation; a numerical policy benchmark does not prove it.
 
-**Why an agent?** One goal persists through observation, repricing, reach changes, publishing and booking. A chatbot answer would not update the calendar or revenue state. Demo monitoring is browser-driven; production needs durable scheduling.
+**Why an agent?** One goal persists through observation, repricing, reach changes, publishing and booking. A chatbot answer would not update the calendar or revenue state. The server-owned demo clock now runs from persisted, leased jobs and continues after all browser pages close on a standalone backend. Serverless requires a real external scheduler plus PostgreSQL.
 
 **Why Nebius/NVIDIA?** A successful live planner will use an available NVIDIA Nemotron through Token Factory, with catalogue discovery and validated JSON. This is the actual integration boundary, not a badge. Until credentials are connected, neither latency nor model superiority is claimed.
 
