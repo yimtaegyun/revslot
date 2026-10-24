@@ -59,3 +59,24 @@ Reason: browser intervals stopped monitoring when a judge closed the tab. SQL le
 Alternatives: continue browser heartbeat; assume a serverless daemon is permanent; activate a paid scheduler without consent.
 
 Trade-off: serverless Play requires durable PostgreSQL and a real external scheduler. A stable standalone backend works without that added service. The pre-existing pricing model, policy objective, agent graph and UI layout are retained. This completes the requested monitoring behavior; it is not a new product feature or architecture rewrite.
+
+## D007 — Deploy existing monitoring with Neon PostgreSQL and native triggers
+
+Decision: use a Free Neon PostgreSQL17 project and a small trigger-authenticated Node function that calls the existing FastAPI tick in bounded six-call invocations. Keep inference on Nebius.
+
+Reason: Vercel temporary SQLite cannot retain state across instances/deployments, and Hobby Cron cannot drive the requested ten-second demo clock. The Neon plugin became available and the account was verified as Free. Schema was applied on an isolated branch before production.
+
+Alternatives: a stable standalone worker with a volume; paid scheduler; an unreliable serverless daemon.
+
+Trade-off: another deployment primitive and free service quotas; timing varies with network/cold starts. PostgreSQL remains the source of truth, with leases and revision fencing; the function owns no booking state. Actual redeployment retention, scheduled repricing and public forged-trigger rejection are verified in NEON_DEPLOYMENT_EVIDENCE.json. No new agent, pricing objective or product feature was added.
+
+
+## D008 — Exit idle work and wake only active demo monitoring
+
+Decision: commit SQL jobs before a trusted server wake; cap a Neon invocation at12ten-second calls and exit on zero jobs; retain native15-minute retries.
+
+Reason: constant empty-queue polling prevents PostgreSQL scale-to-zero and wastes the Free allowance during the required judging-access period throughDec15.
+
+Alternatives: keep a constant hot scheduler; pay for always-on capacity; rely only on ephemeral memory or an open browser.
+
+Trade-off: failed/interrupted work can wait until the next retry and may expire; the UI fails closed if the initial wake is rejected. SQL remains authoritative, and post-response work is bounded rather than an isolate daemon. Actual wake, idle exit, retained reservations and failure/authorization behavior are tested; no paid upgrade was made.

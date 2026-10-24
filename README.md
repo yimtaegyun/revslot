@@ -6,7 +6,7 @@ Cancelled time. Recovered value.
 
 [Live preview](https://revslot-one.vercel.app/) · [Source](https://github.com/yimtaegyun/revslot) · [Browser evidence](demo/README.md) · [Architecture](docs/ARCHITECTURE.md) · [Evaluation](docs/EVALUATION_REPORT.md) · [Demo script](demo/VIDEO_SCRIPT.md) · [Submission draft](demo/DEVPOST.md)
 
-**Build status:** [CI passed](https://github.com/yimtaegyun/revslot/actions/runs/40089803664): 42 Python tests including real PostgreSQL 17, production build/TypeScript and 4 complete browser tests, including repricing after every browser page closes. Nine actual screenshots and the raw browser recording are included. The [public preview](https://revslot-one.vercel.app/) passed anonymous API and real browser reservation checks. It uses ephemeral SQLite and manual time advance. Live Nebius/NVIDIA, Tavily, durable hosted monitoring and the final submission take remain gates. The no-key mode is an explicitly labeled **deterministic preview**, not live AI or a finished eligible submission. [Current state](PROJECT_STATE.md).
+**Build status:** [CI passed](https://github.com/yimtaegyun/revslot/actions/runs/40095746361): 45 Python tests including PostgreSQL 17, 6 scheduler tests, production build/TypeScript and 4 browser tests. The [public preview](https://revslot-one.vercel.app/) now uses **Neon PostgreSQL and an actual hosted scheduler**. A $56 reservation survived redeployment; an API-only session autonomously repriced $64 → $56 and expanded to 6 km after 12.02 real seconds. The start request returned in 0.86 seconds. [Deployment evidence](docs/NEON_DEPLOYMENT_EVIDENCE.json). Live Nebius/NVIDIA, optional Tavily and the final submission take remain gates. The no-key mode is explicitly labeled **deterministic preview**. [Current state](PROJECT_STATE.md).
 
 ![Actual browser result: sandbox booking records $56 and 70% of slot value](demo/screenshots/hero-recovered.png)
 
@@ -22,10 +22,10 @@ Waitlists and yield management already exist. ClassPass describes ML demand prot
 2. LangGraph evaluates full-price natural fill and eight candidate discounts.
 3. A deterministic tool selects the permitted expected-revenue maximum; policy checks floor, cost + margin, cap, confidence and approval.
 4. Twelve opted-in synthetic profiles within 3 km are ranked. One shared $64 offer appears in the marketplace and sandbox inbox records.
-5. Advance 20 demo minutes without booking. The workflow observes actual unsold application state, then reassesses. The seeded preview expands to 6 km / 24 profiles and chooses $56.
+5. Start the server clock and leave the slot unsold. After 20 demo minutes, the workflow reassesses actual application state, expands to 6 km / 24 profiles and chooses $56. Manual +20-minute advance is also available.
 6. Confirm the consumer reservation. An atomic update recovers the slot and changes booked gross revenue to $56: 70% of original slot value.
 
-These are calculated results. The natural-fill percentage comes from the fitted model, not the brief’s illustrative 18%. No payment or real message is sent. Play mode advances 20 simulated minutes every ten real seconds on the server and is visibly labeled. On a running standalone backend, it continues when all browser pages close. [Persistence and serverless boundary](docs/BACKGROUND_MONITORING.md).
+These are calculated results. The natural-fill percentage comes from the fitted model, not the brief’s illustrative 18%. No payment or real message is sent. Play targets 20 simulated minutes every ten real seconds. An authenticated server wake starts bounded Neon work, which calls the existing Python tick. Idle queues exit immediately; a native 15-minute cron retries interruptions. SQL leases and revisions own durable state. Execution continues independently of the browser. Network latency, cold starts and bounded catch-up can affect cadence. [Persistence and scheduler](docs/BACKGROUND_MONITORING.md).
 
 ## Agent architecture
 
@@ -92,15 +92,15 @@ corepack pnpm exec playwright install --with-deps chromium
 corepack pnpm exec playwright test
 ```
 
-The generator, compressed 12,000-event dataset, data card, JSON model coefficients, evaluation code and results are included. No pickle execution is needed. [QA status](docs/QA_REPORT.md) separates checks that ran from checks merely supplied.
+The generator, compressed 12,000-event dataset, data card, JSON model coefficients, evaluation code and results are included. No pickle execution is needed. Scheduler reproduction: `cd infrastructure/neon && npm ci && npm test && npm run build`. [QA status](docs/QA_REPORT.md) separates checks that ran from checks merely supplied.
 
 ## Stack
 
-Next.js, TypeScript, Tailwind, shadcn button, Lucide; FastAPI, Pydantic, LangGraph, HTTPX, SQLite / PostgreSQL; SciPy fitting and scikit-learn metrics. Charts are accessible lightweight CSS visuals. Vercel Services (Beta) configuration, Docker and Playwright CI are supplied. No deployment or provider success is claimed without evidence.
+Next.js, TypeScript, Tailwind, shadcn button, Lucide; FastAPI, Pydantic, LangGraph, HTTPX, SQLite / Neon PostgreSQL; Neon Functions and schedule triggers; SciPy fitting and scikit-learn metrics. Charts are accessible lightweight CSS visuals. Vercel Services (Beta) hosts the public full-stack app. Docker and Playwright CI are supplied; Docker remains unexecuted.
 
 ## Limitations and roadmap
 
-No merchant pilot, real calendar/POS, notifications or payments. The accelerated clock runs on a persisted, leased backend worker and continues after browser closure; serverless requires an external scheduler plus PostgreSQL, otherwise Play is disabled. Production merchant authentication, abuse quotas, calibrated causal elasticity and incremental-revenue experiments remain future work. Hosted `/tmp` SQLite can reset on cold start; use PostgreSQL for durable judging access.
+No merchant pilot, real calendar/POS, notifications or payments. The deployed clock uses persisted PostgreSQL jobs and a Neon scheduler; free hosting quotas and network availability still apply. Production merchant authentication, abuse quotas, calibrated causal elasticity and incremental-revenue experiments remain future work. Missing provider credentials remain visible in the public preview.
 
 Next: verified runtime/public demo → opt-in beauty/wellness pilot → calendar/POS adapters → fitness/PT → restaurant/hospitality. Medical appointments remain excluded. Performance-fee/SaaS terms are hypotheses; no unsupported percentage is selected. [Competitive answers](docs/COMPETITIVE_FAQ.md).
 

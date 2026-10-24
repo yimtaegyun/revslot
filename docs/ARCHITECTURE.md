@@ -16,7 +16,8 @@ flowchart TD
   Guard --> Review["Merchant review when required"]
   Guard --> Publish["Shared offer + sandbox inbox"]
   Publish --> Jobs["Persisted clock job + lease"]
-  Jobs --> Monitor["Server worker observes unsold state"]
+  Jobs --> Monitor["Leased monitoring observes unsold state"]
+  Scheduler["Bounded Neon wake + retry / local worker"] --> Monitor
   Jobs --> Store
   Monitor --> Graph
   Publish --> Booking["Revision-checked reservation"]
@@ -30,7 +31,7 @@ The frontend has no key or pricing authority. Vercel ingress routes `/api/*` to 
 
 Each anonymous run has an unguessable HttpOnly/SameSite cookie and isolated synthetic records. A transaction updates its snapshot only if the previously read revision still matches. Competing actions/booking lose the compare-and-swap and must reload. No external charge/message occurs before commit. Sessions expire after 24 hours.
 
-SQLite is suitable for a local process. `DATABASE_URL` selects PostgreSQL; its hosted connection remains unverified. Serverless `/tmp` SQLite is explicitly ephemeral. Provider calls occur outside database locks; a revision conflict never silently applies a stale action.
+SQLite is suitable for a local process. `DATABASE_URL` selects PostgreSQL. The public deployment uses Neon PostgreSQL; a completed reservation survived redeployment. Serverless `/tmp` SQLite remains an explicitly ephemeral fallback. Provider calls occur outside database locks; a revision conflict never silently applies a stale action.
 
 The UI receives concise tool records, not provider reasoning. Hash-linked audit entries detect accidental edits, not externally certified tampering.
 
@@ -45,4 +46,4 @@ The UI receives concise tool records, not provider reasoning. Hash-linked audit 
 | API offline | Readable error and retry |
 | SSE failure | Polling fallback |
 
-The standalone FastAPI lifespan owns the demo-clock worker. Persisted next-tick jobs survive restarts; revision/token fences prevent stale commits. Vercel functions require a real external scheduler and PostgreSQL instead. No browser heartbeat drives clock progression. See [background monitoring](BACKGROUND_MONITORING.md).
+The standalone FastAPI lifespan owns the local worker. On Vercel, an authenticated wake starts a bounded Neon invocation calling the Python tick at a ten-second target cadence. Empty queues exit immediately; a 15-minute native cron retries interrupted work. Persisted jobs survive restarts; revision/token fences protect overlapping schedules and booking races. No browser heartbeat drives progression. Hosted scheduling is verified in [background monitoring](BACKGROUND_MONITORING.md).

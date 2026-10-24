@@ -1,6 +1,6 @@
 # Revslot — submission text draft, pending live gates
 
-Public preview: https://revslot-one.vercel.app/ . Source: https://github.com/yimtaegyun/revslot . Current public mode is labeled rules preview, ephemeral state and manual clock; this draft is not submitted.
+Public preview: https://revslot-one.vercel.app/ . Source: https://github.com/yimtaegyun/revslot . Current public mode is a labeled rules preview with Neon PostgreSQL and a verified hosted scheduler; this draft is not submitted.
 
 **Tagline:** An autonomous revenue recovery agent for cancelled beauty and wellness appointments.
 
@@ -16,7 +16,7 @@ The seeded demonstration starts with an $80 massage. It publishes $64, then afte
 
 ## How we built it
 
-Next.js/TypeScript/Tailwind provides merchant, consumer, analytics and policy screens. FastAPI/Pydantic handles schema-validated actions. A three-node LangGraph coordinates demand, planning and execution; pricing, customer eligibility, constraints and booking arithmetic remain deterministic Python. SQLite revision transactions work locally, with PostgreSQL support for durable hosting.
+Next.js/TypeScript/Tailwind provides merchant, consumer, analytics and policy screens. FastAPI/Pydantic handles schema-validated actions. A three-node LangGraph coordinates demand, planning and execution; pricing, customer eligibility, constraints and booking arithmetic remain deterministic Python. SQLite revision transactions work locally. The Vercel app uses Neon PostgreSQL; a completed reservation survived redeployment. The server wakes a small authenticated Neon function, which calls the existing Python monitoring tick at ten-second target intervals. It exits on an empty queue; a native 15-minute schedule retries interruptions. An API-only session autonomously repriced without browser-driven clock actions.
 
 The implemented live planner adapter discovers available NVIDIA Nemotron models through Nebius Token Factory, requests structured actions and accepts only publish, expand, wait or recommend. Public context retrieval uses optional Tavily search with cited sources and a bounded feature. Provider failure cannot authorize an unsafe price. A no-key run is explicitly a rules preview.
 
@@ -38,12 +38,12 @@ The strongest lesson was that filling more slots is not the same as protecting r
 
 ## What’s next
 
-Verify live runtime and public judging access; recruit an opt-in beauty/wellness pilot; integrate actual calendars; estimate merchant-specific causal demand and cannibalization; add durable scheduling. Fitness/PT and other perishable service inventory are later directions. Medical appointments remain excluded.
+Verify live NVIDIA-on-Nebius runtime and final submission delivery; recruit an opt-in beauty/wellness pilot; integrate actual calendars; estimate merchant-specific causal demand and cannibalization. Fitness/PT and other perishable service inventory are later directions. Medical appointments remain excluded.
 
 ## Built with
 
-Next.js, TypeScript, React, Tailwind CSS, shadcn/ui, Lucide, Python, FastAPI, Pydantic, LangGraph, HTTPX, SQLite, SciPy, scikit-learn, Playwright. Nebius Token Factory, NVIDIA Nemotron and Tavily are implemented integration targets whose actual verification status must be checked in `docs/RUNTIME_EVIDENCE.json` before the final form is submitted.
+Next.js, TypeScript, React, Tailwind CSS, shadcn/ui, Lucide, Python, FastAPI, Pydantic, LangGraph, HTTPX, SQLite, Neon PostgreSQL, Neon Functions, Function Triggers, Vercel, SciPy, scikit-learn, Playwright. Nebius Token Factory, NVIDIA Nemotron and Tavily are implemented integration targets whose actual verification status must be checked in `docs/RUNTIME_EVIDENCE.json` before the final form is submitted.
 
 ## Final-form gates
 
-Public demo and public YouTube URLs have not yet been verified. Replace this draft’s conditional runtime language only after genuine successful calls; add observed provider feedback. Do not submit the rules-preview build as a completed eligible entry. No legal terms have been accepted by this session.
+Public demo access and hosted persistence/scheduling are verified; public YouTube remains unverified. Replace this draft’s conditional runtime language only after genuine successful calls; add observed provider feedback. Do not submit the rules-preview build as a completed eligible entry. No legal terms have been accepted by this session.

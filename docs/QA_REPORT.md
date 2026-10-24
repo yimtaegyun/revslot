@@ -1,36 +1,33 @@
 # Verification status
 
-Latest verified code: [CI 40089803664](https://github.com/yimtaegyun/revslot/actions/runs/40089803664) passed **42 Python tests, real PostgreSQL 17, production build/TypeScript and 4 Chromium cases**, including server repricing with every browser page closed. Earlier evidence below is retained with its original capture provenance.
+## Latest bounded-wake production checks
 
-Verified locally on 2026-10-24:
+[CI40095746361](https://github.com/yimtaegyun/revslot/actions/runs/40095746361), source d6a6a06a3d7b9aac7cb1b50b89fa115de93253d0:45 Python tests passed in1.19s with PostgreSQL17;6 Node scheduler tests passed; production build/TypeScript passed;4 Chromium tests passed in23.7s. Local44 passed/1 PostgreSQL skipped.
 
-- **34 pytest tests passed**, including price/margin/cap constraints, probability/time behavior, high-demand full price, opt-in matching, strict schemas, cancellation idempotency, full recovery, actual repricing/reach, same-slot pricing, human approval, stale/double booking, expiry, origin/session isolation, atomic competing writes, audit modification detection, provider parser failures and total inference timeout.
-- Next.js production build and TypeScript passed again after dependency/source cleanup (Next.js 16.3.4).
-- Dataset generator and independent-seed simulation executed; data card/checksum and unfavorable metrics retained.
-- Connectivity checker executed and correctly returned blocked (exit 2): no Nebius/Tavily key configured. Unit mocked calls are not runtime evidence.
+Production deployment dpl_AqCrPafSjQotgVD7m9t3aYktZ7xG is READY. Anonymous tests retained the previous$56 reservation across redeployment. The authenticated wake returned in0.86s; an API-only session repriced$64→$56 /6km /20demo minutes after12.02s, paused, booked$56/70% and stopped future work. Native function logs recorded3calls /1processed /0failed, then an idle scheduled retry exited after1call. SQL confirmed zero pending clock jobs. Public/forged schedule requests and missing/wrong-token wake requests all returned401. This deployment's error/fatal scan for16:17:21.934Z–16:32:21.934Z returned no matching logs.
 
-**Full-stack browser verification passed:** [CI run 40064620041](https://github.com/yimtaegyun/revslot/actions/runs/40064620041), commit `574de1d52a5bc8d185a20df08e9ca7e45833e88e`. Python: 34 passed in 0.67 seconds. Production build/TypeScript: passed. Chromium: 3 passed in 11.7 seconds, covering cancellation → $64 offer → +20 demo minutes → $56 reprice/expanded audience → sandbox reservation → merchant metrics, human approval, and mobile navigation/no horizontal overflow. Nine real screenshots and the 7.64-second raw workflow recording are in [demo](../demo/README.md); checksums and log excerpts are in [QA_EVIDENCE.json](QA_EVIDENCE.json). The main agent inspected every captured view, including final provenance. Text readability and an inactive skip-link capture defect were corrected before the passing run.
+The native retry schedule is now every15minutes; starting Play initiates bounded work immediately. This avoids constant idle database warming while retaining SQL jobs/leases and retry ownership. All values are synthetic; live provider verification is still open.
 
-The first GitHub CI run failed before hydration because development-resource requests were blocked for the loopback host. Tests now exercise the production build; development origins are limited to localhost/127.0.0.1. A Strict Mode initialization race, client fetch timeout and explicit SQL connection cleanup were repaired. A subsequent run passed all tests but failed a cache-save cleanup; that invalid cache configuration was removed. Both final runs succeeded. Managed preview itself cannot launch Python/uvicorn; CI is the verified full-stack environment.
+## Earlier executed checks
 
-The 1920×1080, 170-second captioned review film uses actual inspected captures. It is silent and retains a rules-preview disclosure throughout. It is **not** the final live-inference/public-YouTube submission video. No generated mock UI or fabricated provider call is substituted for browser evidence.
+- [CI40092611551](https://github.com/yimtaegyun/revslot/actions/runs/40092611551), commit9ae376e9c5741d13699f1dde74e8570c5166645b:42 Python tests passed in1.05s including the versioned migration, real PostgreSQL17, competing leases, CAS and repricing; production build/TypeScript passed;4 Chromium tests passed in22.4s. The fourth closed every page and confirmed server repricing after reopening.
+- New Neon scheduler source:3 local Node tests passed, covering ten-second cadence, redirect/failure stop and missing trigger provenance; production bundle built. This small infrastructure change is added to CI.
+- Public deployment dpl_HxFvaBsDjxFFrA8KVpJWnMHubKWd: anonymous health/session/cancel/reprice/book returned200 with durability=postgres. A$56 booking at revision3 survived redeployment unchanged.
+- Real hosted Neon trigger: six calls /one processed recovery job /zero failures in native logs at2026-10-24T12:34:51Z. A separate API-only session repriced$64→$56 /6km after13.27real seconds, with only read-only GET observation after clock start. No browser heartbeat, manual advance or test-side tick call drove that transition.
+- Actual public browser session: automatic clock advanced to60demo minutes, further repriced to$52, paused and confirmed$52 /65% sandbox recovery. The screenshot records this actual state rather than relabeling it as the earlier$56 scenario.
+- Runtime error/fatal scan of this production deployment from12:26:55.757Z through12:41:55.757Z returned no matching logs.
+- Public requests and forged Neon trigger headers to the verification function both returned401. A$56 reservation was independently observed in Neon SQL before the redeployment check.
 
-Docker has not been executed; the hosted database is unconnected. PostgreSQL 17 SQL was subsequently verified in CI (latest section below). Vercel project creation succeeded, but account-scope access denied storage linking; no successful live deployment is recorded. Video/public YouTube/Devpost remain open gates.
+[Neon evidence](NEON_DEPLOYMENT_EVIDENCE.json), [public deployment evidence](LIVE_DEPLOYMENT_EVIDENCE.json), [captures](../demo/README.md). All business/customer data and booked amounts are synthetic.
 
-Regression after subsequent changes must update this report and PROJECT_STATE.md. Check CI artifacts for actual merchant, offer, repricing, marketplace, recovery, analytics, guardrail and mobile screenshots.
+## Historical capture provenance
 
-## Latest: server monitoring and real PostgreSQL
+The original nine screenshots and raw7.64s recording came from [CI40064620041](https://github.com/yimtaegyun/revslot/actions/runs/40064620041), commit574de1d52a5bc8d185a20df08e9ca7e45833e88e:34 Python /3 Chromium tests passed. Original hashes and log excerpts remain in QA_EVIDENCE.json. The browser initially failed development-resource hydration; development-origin/initialization issues were repaired and tests switched to a production build. An invalid cache-save configuration was also removed before the final successful run.
 
-[CI 40089803664](https://github.com/yimtaegyun/revslot/actions/runs/40089803664) at commit1fc77683a1a73f05e044636a3ff7e429e95b5a4d passed 42 Python tests in 1.52 seconds, including a real PostgreSQL 17 service. Production build/TypeScript passed;4 Chromium tests passed in 23.7 seconds. The new browser case started the server clock, closed every page, observed repricing through read-only API polling and reopened the dashboard to confirm $56 before pausing it. That case took 12.3 seconds.
+[CI40089803664](https://github.com/yimtaegyun/revslot/actions/runs/40089803664) subsequently verified42 Python /4 browser tests and the server-owned clock. Separate before-close and after-reopen page videos are unedited; the no-page interval is established by the test and read-only observation, not a fabricated continuous recording. Screenshot11 records the first public ephemeral/manual deployment. Screenshot12 records the later durable/scheduled deployment.
 
-Persistence/restart, competing leases, expired-token fencing, CAS, retry, pause/reset/booking termination, expiry catch-up and scheduler authorization are tested. Hosted PostgreSQL is still unconnected; this result verifies the SQL against a real CI database, not production provisioning. Docker and public deployment remain unexecuted. Old screenshot/video files remain explicitly tied to their original verified capture commit. The numerical evaluation and live-provider gates are unchanged.
+The170-second silent captioned review film uses actual original captures and retains rules-preview disclosure throughout. It is not the final eligible live-model/public-YouTube take.
 
-## Public deployment verification
+## Open verification
 
-[Revslot public preview](https://revslot-one.vercel.app/) is READY at deployment dpl_4DHbjT2Ma8RB1WNoqBp42yzc3fd2, source875c8f59ba8517ed798e2b80546a274c792db0d5. A fresh HTTP client without Vercel authentication received200 for health, session, cancel, advance and booking; prices6400→5600 cents,6km and70% recovery matched application state. The cloud browser independently completed the same visible workflow and saved an actual result screenshot. Project protection was scoped to allow this requested public audience. [Machine-readable evidence](LIVE_DEPLOYMENT_EVIDENCE.json).
-
-Git-source deployment failed git_info_fail. The first direct upload omitted the newly-added monitoring module; production logs revealed the exact import error. The corrected49-file bundle matched the published Git tree and passed import/session/cancel/reprice before redeployment. No model result was fabricated. Current public mode is rules preview, manual clock and ephemeral SQLite. This is not proof of durable hosted monitoring or live NVIDIA inference; those gates remain open.
-
-## Versioned migration readiness
-
-[CI40092611551](https://github.com/yimtaegyun/revslot/actions/runs/40092611551) at9ae376e9c5741d13699f1dde74e8570c5166645b passed42 Python tests including applying backend/migrations/001_recovery_state.sql to PostgreSQL17, production build/TypeScript and4 Chromium cases. Neon installation is confirmed, but this session exposes no Neon DB tools and the official CLI has no authenticated profile. No Neon remote schema, project or DATABASE_URL has been created. The public preview remains unchanged and functional.
+No Nebius/Tavily key is configured. The connectivity checker previously correctly returned exit2; mocked calls do not satisfy actual NVIDIA-on-Nebius usage. Live model latency, final public YouTube, observed sponsor feedback, user legal acceptance and Devpost submission remain open. Docker remains unexecuted. No real merchant pilot, customer, payment, outbound message or incremental revenue is claimed.

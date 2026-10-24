@@ -24,4 +24,18 @@ The README hero is a crop of the actual recovered screenshot. Other source captu
 
 ## Public browser verification
 
-[Public preview](https://revslot-one.vercel.app/) passed an anonymous API sequence and an independent visible browser reservation flow. [Actual live-browser result](screenshots/11-live-browser.jpg), [deployment evidence](../docs/LIVE_DEPLOYMENT_EVIDENCE.json). Public mode uses rules preview, ephemeral SQLite and manual advance; the standalone worker behavior proven above is not claimed for this serverless host.
+[Public preview](https://revslot-one.vercel.app/) passed an anonymous API sequence and an independent visible browser reservation flow. [Actual live-browser result](screenshots/11-live-browser.jpg), [deployment evidence](../docs/LIVE_DEPLOYMENT_EVIDENCE.json). That first public capture used ephemeral SQLite and manual advance. The current deployment uses Neon PostgreSQL and actual hosted scheduling, verified separately below.
+
+
+## Hosted Neon verification
+
+A $56 reservation survived a Vercel redeployment with its revision unchanged. A separate API-only session received no mutation after starting the clock: the real Neon schedule repriced $64 to$56 and expanded reach to6km after13.27 real seconds. Native function logs independently recorded6 calls /1 processed job /0 failures. [Detailed evidence](../docs/NEON_DEPLOYMENT_EVIDENCE.json).
+
+The [latest visible public browser capture](screenshots/12-live-neon-scheduled.jpg) is a separate session: the actual clock continued to60 demo minutes, selected$52 after further reassessment, was paused and confirmed a$52/65% sandbox reservation. It is not relabeled as the earlier$56 result. Missing NVIDIA credentials remain visible as deterministic preview.
+
+
+## Latest bounded-wake deployment
+
+[CI40095746361](https://github.com/yimtaegyun/revslot/actions/runs/40095746361) at d6a6a06a3d7b9aac7cb1b50b89fa115de93253d0 passed45 Python tests with real PostgreSQL17,6 Node scheduler tests, production build/TypeScript and4 Chromium cases. Production deployment dpl_AqCrPafSjQotgVD7m9t3aYktZ7xG retains the same public URL.
+
+An authenticated server wake returned in0.86s. Without a browser, the slot repriced$64→$56 /6km /20demo minutes after12.02real seconds, then booked at$56/70%. Native logs showed3calls /1processed /0failures and the work exited after booking; the later idle retry made only1call. The pre-existing$56 reservation also survived this redeployment. Public/forged trigger calls and unauthenticated/wrong-token wake calls returned401. No provider key or live NVIDIA inference is claimed.

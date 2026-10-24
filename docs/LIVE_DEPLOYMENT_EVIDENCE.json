@@ -1,11 +1,11 @@
 {
-  "verified_at_utc": "2026-10-24T11:49:12.052306+00:00",
+  "verified_at_utc": "2026-10-24T16:34:08.894985+00:00",
   "project_id": "prj_BWTzn2W1WebpfwmOVUldqvTxOC3y",
-  "deployment_id": "dpl_4DHbjT2Ma8RB1WNoqBp42yzc3fd2",
+  "deployment_id": "dpl_AqCrPafSjQotgVD7m9t3aYktZ7xG",
   "url": "https://revslot-one.vercel.app/",
   "state": "READY",
-  "source_commit": "875c8f59ba8517ed798e2b80546a274c792db0d5",
-  "source_tree": "eadff2161e9197dba60a3dcc06f445d1a85c9fd3",
+  "source_commit": "d6a6a06a3d7b9aac7cb1b50b89fa115de93253d0",
+  "source_tree": "276a420da26bfa471412a3ce19fc4a89fe80fb0b",
   "source_bundle_files": 49,
   "source_mode": "exact reviewed source-file upload after git_info_fail",
   "anonymous_health_status": 200,
@@ -22,22 +22,196 @@
   },
   "browser_ui_workflow_verified": true,
   "public_login_required": false,
-  "monitoring_mode": "manual",
-  "durability": "ephemeral_sqlite",
+  "monitoring_mode": "external_scheduler",
+  "durability": "postgres",
   "live_nebius_verified": false,
   "live_tavily_verified": false,
   "submission_ready": false,
   "screenshot": {
-    "path": "demo/screenshots/11-live-browser.jpg",
-    "sha256": "b4d03047c063f6406de1612ad2d1b15baf494cd865ad89d342b059d6f92b9b14"
+    "path": "demo/screenshots/12-live-neon-scheduled.jpg",
+    "sha256": "9a530526301ea7fed47a7dd17147d6265f57c165f53f5d50942fa7e115fc3e5e"
+  },
+  "cross_deployment_persistence": {
+    "passed": true,
+    "revision_before": 3,
+    "revision_after": 3,
+    "recovered_cents": 5600,
+    "durability": "postgres"
+  },
+  "hosted_scheduling": {
+    "passed": true,
+    "browser_used": false,
+    "observer_requests": "read-only GET /api/state",
+    "elapsed_real_seconds": 12.02,
+    "elapsed_demo_minutes": 20,
+    "price_before_cents": 6400,
+    "price_after_cents": 5600,
+    "radius_km": 6
+  },
+  "browser_ui_latest": {
+    "verified": true,
+    "automatic_clock_used": true,
+    "elapsed_demo_minutes": 60,
+    "final_price_cents": 5200,
+    "recovered_cents": 5200,
+    "recovery_rate": 0.65,
+    "pause_and_reservation_confirmed": true,
+    "note": "Separate visible browser session continued beyond the first $56 reprice; the actual current shared price was $52."
+  },
+  "previous_deployment_evidence": {
+    "verified_at_utc": "2026-10-24T12:41:56.927255+00:00",
+    "project_id": "prj_BWTzn2W1WebpfwmOVUldqvTxOC3y",
+    "deployment_id": "dpl_HxFvaBsDjxFFrA8KVpJWnMHubKWd",
+    "url": "https://revslot-one.vercel.app/",
+    "state": "READY",
+    "source_commit": "6ed2866a264426e20180083a4aa369a65c0962e2",
+    "source_tree": "b24569366d22aece98f8a99717fc14785f0647fd",
+    "source_bundle_files": 49,
+    "source_mode": "exact reviewed source-file upload after git_info_fail",
+    "anonymous_health_status": 200,
+    "anonymous_workflow": {
+      "session_status": 200,
+      "cancel_status": 200,
+      "initial_price_cents": 6400,
+      "advance_status": 200,
+      "repriced_cents": 5600,
+      "radius_km": 6,
+      "booking_status": 200,
+      "recovered_cents": 5600,
+      "recovery_rate": 0.7
+    },
+    "browser_ui_workflow_verified": true,
+    "public_login_required": false,
+    "monitoring_mode": "external_scheduler",
+    "durability": "postgres",
+    "live_nebius_verified": false,
+    "live_tavily_verified": false,
+    "submission_ready": false,
+    "screenshot": {
+      "path": "demo/screenshots/12-live-neon-scheduled.jpg",
+      "sha256": "9a530526301ea7fed47a7dd17147d6265f57c165f53f5d50942fa7e115fc3e5e"
+    },
+    "cross_deployment_persistence": {
+      "passed": true,
+      "revision_before": 3,
+      "revision_after": 3,
+      "recovered_cents": 5600,
+      "durability": "postgres"
+    },
+    "hosted_scheduling": {
+      "passed": true,
+      "browser_used": false,
+      "observer_requests": "read-only GET /api/state",
+      "elapsed_real_seconds": 13.27,
+      "elapsed_demo_minutes": 20,
+      "price_before_cents": 6400,
+      "price_after_cents": 5600,
+      "radius_km": 6,
+      "revision_before": 2,
+      "revision_after": 3
+    },
+    "browser_ui_latest": {
+      "verified": true,
+      "automatic_clock_used": true,
+      "elapsed_demo_minutes": 60,
+      "final_price_cents": 5200,
+      "recovered_cents": 5200,
+      "recovery_rate": 0.65,
+      "pause_and_reservation_confirmed": true,
+      "note": "Separate visible browser session continued beyond the first $56 reprice; the actual current shared price was $52."
+    },
+    "previous_deployment_evidence": {
+      "verified_at_utc": "2026-10-24T11:49:12.052306+00:00",
+      "project_id": "prj_BWTzn2W1WebpfwmOVUldqvTxOC3y",
+      "deployment_id": "dpl_4DHbjT2Ma8RB1WNoqBp42yzc3fd2",
+      "url": "https://revslot-one.vercel.app/",
+      "state": "READY",
+      "source_commit": "875c8f59ba8517ed798e2b80546a274c792db0d5",
+      "source_tree": "eadff2161e9197dba60a3dcc06f445d1a85c9fd3",
+      "source_bundle_files": 49,
+      "source_mode": "exact reviewed source-file upload after git_info_fail",
+      "anonymous_health_status": 200,
+      "anonymous_workflow": {
+        "session_status": 200,
+        "cancel_status": 200,
+        "initial_price_cents": 6400,
+        "advance_status": 200,
+        "repriced_cents": 5600,
+        "radius_km": 6,
+        "booking_status": 200,
+        "recovered_cents": 5600,
+        "recovery_rate": 0.7
+      },
+      "browser_ui_workflow_verified": true,
+      "public_login_required": false,
+      "monitoring_mode": "manual",
+      "durability": "ephemeral_sqlite",
+      "live_nebius_verified": false,
+      "live_tavily_verified": false,
+      "submission_ready": false,
+      "screenshot": {
+        "path": "demo/screenshots/11-live-browser.jpg",
+        "sha256": "b4d03047c063f6406de1612ad2d1b15baf494cd865ad89d342b059d6f92b9b14"
+      },
+      "runtime_error_scan": {
+        "deployment_id": "dpl_4DHbjT2Ma8RB1WNoqBp42yzc3fd2",
+        "window_utc": "2026-10-24T11:37:02.204Z to2026-10-24T11:52:02.204Z",
+        "levels": [
+          "error",
+          "fatal"
+        ],
+        "matching_logs": 0
+      }
+    },
+    "runtime_error_scan": {
+      "deployment_id": "dpl_HxFvaBsDjxFFrA8KVpJWnMHubKWd",
+      "window_utc": "2026-10-24T12:26:55.757Z to 2026-10-24T12:41:55.757Z",
+      "levels": [
+        "error",
+        "fatal"
+      ],
+      "matching_logs": 0
+    }
   },
   "runtime_error_scan": {
-    "deployment_id": "dpl_4DHbjT2Ma8RB1WNoqBp42yzc3fd2",
-    "window_utc": "2026-10-24T11:37:02.204Z to2026-10-24T11:52:02.204Z",
+    "deployment_id": "dpl_AqCrPafSjQotgVD7m9t3aYktZ7xG",
+    "window_utc": "2026-10-24T16:17:21.934Z to 2026-10-24T16:32:21.934Z",
     "levels": [
       "error",
       "fatal"
     ],
     "matching_logs": 0
+  },
+  "scheduler_configuration": {
+    "function_slug": "recoveryclock",
+    "function_deployment_id": 2,
+    "trigger_id": "trigger-e2c212f4-410d-4afd-8157-d5bf544148b1",
+    "retry_cron": "*/15 * * * *",
+    "immediate_start": "authenticated server-only POST /wake; bounded work tracked by Neon waitUntil",
+    "maximum_calls_per_invocation": 12,
+    "target_cadence_seconds": 10,
+    "idle_behavior": "stop immediately when active_jobs=0",
+    "durability_owner": "PostgreSQL clock_jobs, leases and revision CAS; not module memory or waitUntil",
+    "status": "actual wake, scheduled retry and idle exit verified",
+    "wake_log": {
+      "timestamp_utc": "2026-10-24T16:29:09Z",
+      "calls": 3,
+      "processed": 1,
+      "conflicts": 0,
+      "failed": 0
+    },
+    "idle_retry_log": {
+      "timestamp_utc": "2026-10-24T16:30:03Z",
+      "calls": 1,
+      "processed": 0,
+      "conflicts": 0,
+      "failed": 0
+    },
+    "pending_jobs_after_booking": 0,
+    "public_cron_request_status": 401,
+    "forged_trigger_header_status": 401,
+    "unauthenticated_wake_status": 401,
+    "wrong_bearer_wake_status": 401,
+    "node_tests_passed": 6
   }
 }

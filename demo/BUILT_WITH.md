@@ -2,7 +2,7 @@
 
 Implemented and locally tested: Python, FastAPI, Pydantic, LangGraph, HTTPX, SQLite, NumPy/SciPy, scikit-learn metrics, Next.js, React, TypeScript, Tailwind, shadcn button primitive, Lucide.
 
-Implemented test/deployment assets: Playwright test suite and GitHub Actions; Vercel Services (Beta), Docker Compose; optional PostgreSQL driver. Consult QA/deployment evidence before claiming these ran successfully.
+Verified test/deployment services: Playwright, GitHub Actions, Vercel Services (Beta), Neon PostgreSQL17, Neon Functions and Function Triggers. The hosted reservation survives redeployment; actual scheduled repricing is verified. Docker Compose is supplied but unexecuted. Consult QA/deployment evidence for exact checks.
 
 Implemented adapters, runtime verification pending: Nebius Token Factory, NVIDIA Nemotron, Tavily. No other model/provider is used as a hidden substitute.
 
