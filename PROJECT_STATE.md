@@ -20,10 +20,10 @@ Public full-stack app, durable hosted state and browser-independent recovery mon
 Connect live provider access using secure account flows; capture factual runtime evidence and final submission materials.
 
 ## Blocked
-No Nebius or Tavily server key. The cloud browser is at the actual Nebius Auth login page; SSO, Google and GitHub are offered. No method/account chosen, credentials entered or API key created. Do not infer login from opening the page.
+No Nebius or Tavily server key. User selected Google through secure browserAuth. The flow reached Nebius first-account contact details, then an email-verification modal. Signup/email verification and legal acceptance require user completion; no API key created. Do not inspect OTP values or mark the account ready before fresh target-domain evidence.
 
 ## Next 5 Actions
-1. Complete secure Nebius login and inspect existing credits/access.
+1. Let the user finish Nebius email verification and personally review/accept signup terms, then inspect credits/access.
 2. Obtain the user-authorized key, store only server-side, and verify actual /models plus NVIDIA Nemotron structured inference.
 3. Connect optional real Tavily search; save non-secret runtime evidence and observed sponsor feedback.
 4. Record the final live-provider video under3min, publish accessible YouTube and recheck all judge URLs.
