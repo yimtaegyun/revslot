@@ -20,4 +20,4 @@ Updated: 2026-10-24 Asia/Seoul.
 
 - Latest verification: CI 40089803664 at1fc77683a1a73f05e044636a3ff7e429e95b5a4d succeeded:42 Python tests with real PostgreSQL 17, production build/TypeScript,4 Chromium cases. Every browser page closed while the server repriced; reopening confirmed $56. Local 41 passed/1 skipped because no local PostgreSQL server. Hosted database remains unconnected. See docs/BACKGROUND_MONITORING.md and QA_EVIDENCE.json.
 
-- Connection next step: Neon was found and suggested; installation/connection is not confirmed. Project server env remains empty. Use only a free plan unless user approves payment. Do not imply that a suggested integration is connected.
+- Neon installation confirmed: plugin installed/enabled per account metadata. This session still exposes no Neon project/SQL/connection tools; official CLI8.11.1 was installed in scratch, but has0 authenticated profiles and no NEON_API_KEY. No Neon project/database was created. Versioned initial migration prepared; test it against PostgreSQL CI before applying remotely. Existing-account auth must be resolved; do not substitute an expiring claimable DB or ask to reinstall.

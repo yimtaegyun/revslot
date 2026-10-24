@@ -3,6 +3,7 @@ import copy
 import os
 import secrets
 import time
+from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
 import pytest
 import revslot.app as module
@@ -104,6 +105,9 @@ async def test_real_postgres_clock_restart_claims_and_atomic_updates(monkeypatch
     monkeypatch.delenv("NEBIUS_API_KEY",raising=False)
     monkeypatch.delenv("TAVILY_API_KEY",raising=False)
     db=Store();rid=secrets.token_hex(20)
+    migration=Path(__file__).resolve().parents[1]/"backend/migrations/001_recovery_state.sql"
+    with db.connection() as c:
+        c.execute(migration.read_text(),prepare=False)
     s=initial_state(rid);s["slots"][0]["status"]="recovering"
     append_action(s,"Orchestrator","cancellation.receive","Cancellation detected","Synthetic PostgreSQL integration scenario",slot_id="slot-1")
     s=await recover(s,"slot-1")
