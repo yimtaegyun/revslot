@@ -87,6 +87,16 @@ def test_policy_off_and_clock_reprice_off(client):
     s=post(client,action="cancel");assert s["slots"][0]["status"]=="approval"
 
 
+def test_disabled_repricing_requires_new_approval(client):
+    s=post(client,action="cancel")
+    s=post(client,action="policy",policy={**s["policy"],"allow_auto_reprice":False})
+    assert s["slots"][0]["status"]=="approval"
+    quote=s["offers"]["slot-1"]
+    post(client,action="approve",offer_revision=quote["revision"])
+    s=post(client,action="advance",minutes=20)
+    assert s["slots"][0]["status"]=="approval" and not s["offers"]["slot-1"]["published"]
+
+
 def test_run_isolation_and_origin(client):
     first=post(client,action="cancel")
     second=client.post("/api/session").json()

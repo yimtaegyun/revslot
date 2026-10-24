@@ -12,7 +12,7 @@ import type {Evaluation,Offer,Slot,State,View} from '@/lib/types';
 import {clock,money} from '@/lib/types';
 
 async function api<T>(path:string,body?:unknown):Promise<T>{
- const response=await fetch(`/api/${path}`,{method:body?'POST':'GET',headers:body?{'Content-Type':'application/json'}:undefined,body:body?JSON.stringify(body):undefined,cache:'no-store'});
+ const response=await fetch(`/api/${path}`,{method:body?'POST':'GET',headers:body?{'Content-Type':'application/json'}:undefined,body:body?JSON.stringify(body):undefined,cache:'no-store',signal:AbortSignal.timeout(20000)});
  if(!response.ok){const error=await response.json().catch(()=>({detail:'Please try again.'})) as {detail?:unknown};throw new Error(typeof error.detail==='string'?error.detail:'Review the current settings and try again.');}
  return response.json();
 }
@@ -26,7 +26,7 @@ export default function Dashboard({initialView='overview'}:{initialView?:View}){
  const accept=useCallback((s:State)=>{if(latest.current&&s.run_id!==latest.current.run_id)return;if(!latest.current||s.revision>=latest.current.revision){latest.current=s;setState(s);}},[]);
  const refresh=useCallback(async()=>{try{accept(await api<State>('state'));}catch(e){setError((e as Error).message);}},[accept]);
  const reset=useCallback(async()=>{setPlaying(false);setBusy(true);setError('');try{const s=await api<State>('session',{});latest.current=s;setState(s);setSelected('slot-1');setView('overview');setToast('A fresh demo day is ready.');}catch(e){setError((e as Error).message);}finally{setBusy(false);}},[]);
- useEffect(()=>{let alive=true;(async()=>{try{let s:State;try{s=await api<State>('state');}catch{s=await api<State>('session',{});}if(alive)accept(s);}catch(e){if(alive)setError((e as Error).message);}finally{if(alive)setLoading(false);}})();api<Evaluation>('evaluation').then(e=>{if(alive)setEvaluation(e);}).catch(()=>{});return()=>{alive=false;};},[accept]);
+ useEffect(()=>{let alive=true;(async()=>{try{let s:State;try{s=await api<State>('state');}catch{if(!alive)return;s=await api<State>('session',{});}if(alive)accept(s);}catch(e){if(alive)setError((e as Error).message);}finally{if(alive)setLoading(false);}})();api<Evaluation>('evaluation').then(e=>{if(alive)setEvaluation(e);}).catch(()=>{});return()=>{alive=false;};},[accept]);
  const rid=state?.run_id;
  useEffect(()=>{if(!rid)return;let es:EventSource|null=null;let interval:ReturnType<typeof setInterval>|null=null;
   es=new EventSource('/api/events');es.addEventListener('state',e=>{try{accept(JSON.parse((e as MessageEvent).data));}catch{/* wait for the next valid state */}});es.onerror=()=>{setSourceMode('polling');es?.close();if(!interval)interval=setInterval(()=>{if(!inFlight.current)refresh();},5000);};

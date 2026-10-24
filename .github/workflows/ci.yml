@@ -2,6 +2,7 @@ name: Recovery verification
 on:
   push:
     branches: [main]
+    paths: ["backend/**", "frontend/**", "scripts/**", "tests/**", "data/**", "simulation/**", "requirements*", "pyproject.toml", ".github/workflows/**"]
   pull_request:
 permissions:
   contents: read

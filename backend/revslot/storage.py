@@ -3,6 +3,7 @@ import json
 import os
 import sqlite3
 import time
+from contextlib import contextmanager
 from pathlib import Path
 
 
@@ -26,28 +27,37 @@ class Store:
 
     def sql(self,text): return text.replace("?","%s") if self.database_url else text
 
+    @contextmanager
+    def connection(self):
+        conn=self.connect()
+        try:
+            with conn:
+                yield conn
+        finally:
+            conn.close()
+
     def init(self):
         if self._initialized: return
-        with self.connect() as c:
+        with self.connection() as c:
             c.execute("CREATE TABLE IF NOT EXISTS runs(id TEXT PRIMARY KEY, revision INTEGER NOT NULL, body TEXT NOT NULL, updated DOUBLE PRECISION NOT NULL)")
         self._initialized=True
 
     def create(self,state):
         self.init()
-        with self.connect() as c:
+        with self.connection() as c:
             c.execute(self.sql("INSERT INTO runs VALUES(?,?,?,?)"),(state["run_id"],state["revision"],json.dumps(state),time.time()))
         return state
 
     def load(self,run_id):
         self.init()
-        with self.connect() as c:
+        with self.connection() as c:
             row=c.execute(self.sql("SELECT body,updated FROM runs WHERE id=?"),(run_id,)).fetchone()
         if not row or time.time()-row[1]>86400: raise Missing("Demo session expired; load a fresh scenario")
         return json.loads(row[0])
 
     def save(self,state,expected):
         state["revision"]=expected+1
-        with self.connect() as c:
+        with self.connection() as c:
             cur=c.execute(self.sql("UPDATE runs SET revision=?,body=?,updated=? WHERE id=? AND revision=?"),
                 (state["revision"],json.dumps(state),time.time(),state["run_id"],expected))
             if cur.rowcount!=1: raise Conflict("State changed; refresh before retrying")

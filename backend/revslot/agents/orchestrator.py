@@ -59,6 +59,9 @@ async def plan(g: RecoveryGraph):
         selected_action="recommend"
     radius=min(6 if selected_action=="expand" and g["stage"] else 3,state["policy"]["max_radius_km"])
     quote=optimize(slot,state["policy"],remaining_hours(slot,state["clock"]),min(g["stage"],1),radius,delta).model_dump()
+    if quote!=g["quote"]:
+        append_action(state,"Pricing strategist","pricing.revalidate","Price refreshed for chosen plan",
+                      f"Selected reach {radius:g} km; external feature {delta:.3f}. "+quote["explanation"])
     label="NVIDIA plan validated" if inference["verified"] else "Rule-based preview" if inference["mode"]=="rules_preview" else "Inference unavailable"
     append_action(state,"Orchestrator","nebius.plan",label,inference["plan"]["summary"],outcome=inference["mode"])
     return {"state":state,"inference":inference,"quote":quote}
