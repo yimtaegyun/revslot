@@ -16,7 +16,7 @@ from .pricing import remaining_hours,optimize
 from .providers import provider_status
 from .audit import append_action,verify_actions
 from .agents.orchestrator import recover,get_slot
-from .monitoring import advance_clock,has_active,stop_clock,tick_due,monitoring_mode,worker_loop
+from .monitoring import advance_clock,has_active,stop_clock,tick_due,monitoring_mode,worker_loop,wake_scheduler
 
 @asynccontextmanager
 async def lifespan(application):
@@ -179,6 +179,22 @@ async def action(body:ActionRequest,request:Request,response:Response):
         append_action(state,"Consumer","notifications.optout","Notification preference saved","This synthetic profile is excluded from future direct notifications.")
     if not has_active(state): stop_clock(state)
     store.save(state,expected)
+    if body.action=="clock" and body.running and monitoring_mode()=="external_scheduler":
+        try:
+            await wake_scheduler()
+        except Exception:
+            # A rejected/unknown wake must not leave a misleading running clock.
+            for retry in range(3):
+                state=store.load(state["run_id"])
+                if not state.get("clock_control",{}).get("running"): break
+                revision=state["revision"];stop_clock(state)
+                append_action(state,"Recovery operator","clock.wake_failed","Server clock paused","Scheduler wake failed. Persisted clock paused; retry when the service is available.")
+                try:
+                    store.save(state,revision)
+                    break
+                except Conflict:
+                    if retry==2: raise
+            raise HTTPException(503,"Scheduler could not start. The demo clock is paused; please retry.")
     response.headers["Cache-Control"]="no-store"
     return public_state(state)
 
@@ -222,4 +238,5 @@ async def scheduled_tick(request:Request):
         raise HTTPException(401,"Scheduler authorization required")
     if os.getenv("VERCEL") and store.durability!="postgres":
         raise HTTPException(503,"Serverless scheduling requires durable PostgreSQL")
-    return await tick_due(store)
+    result=await tick_due(store)
+    return {**result,"active_jobs":store.scheduled_count()}

@@ -88,6 +88,11 @@ class Store:
                 if cur.rowcount==1: claimed.append((rid,token))
         return claimed
 
+    def scheduled_count(self):
+        self.init()
+        with self.connection() as c:
+            return c.execute("SELECT count(*) FROM clock_jobs").fetchone()[0]
+
     def release_job(self,run_id,token,*,remove=False):
         with self.connection() as c:
             if remove:

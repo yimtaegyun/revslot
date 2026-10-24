@@ -2,7 +2,7 @@ name: Recovery verification
 on:
   push:
     branches: [main]
-    paths: ["backend/**", "frontend/**", "scripts/**", "tests/**", "data/**", "simulation/**", "requirements*", "pyproject.toml", ".github/workflows/**"]
+    paths: ["backend/**", "frontend/**", "infrastructure/**", "scripts/**", "tests/**", "data/**", "simulation/**", "requirements*", "pyproject.toml", ".github/workflows/**"]
   pull_request:
 permissions:
   contents: read
@@ -40,6 +40,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - run: npm ci --no-audit --no-fund && npm test && npm run build
+        working-directory: infrastructure/neon
       - run: pnpm install --frozen-lockfile
         working-directory: frontend
       - run: pnpm run build:vercel

@@ -6,6 +6,7 @@ import time
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
 import pytest
+import httpx
 import revslot.app as module
 from revslot import monitoring
 from revslot.audit import append_action,verify_actions
@@ -82,6 +83,45 @@ async def test_failed_tick_rolls_back_and_remains_retryable(client,monkeypatch):
     monkeypatch.setattr(monitoring,"advance_clock",real)
     assert (await monitoring.tick_due(module.store,now))["processed"]==1
     assert module.store.load(s["run_id"])["elapsed_minutes"]==20
+
+
+def test_external_clock_wake_starts_after_durable_job_commit(client,monkeypatch):
+    post(client,action="cancel")
+    monkeypatch.setattr(module,"monitoring_mode",lambda:"external_scheduler")
+    observed=[]
+    async def wake():
+        observed.append(module.store.scheduled_count())
+    monkeypatch.setattr(module,"wake_scheduler",wake)
+    s=post(client,action="clock",running=True)
+    assert observed==[1] and s["clock_control"]["running"]
+
+
+def test_failed_external_wake_pauses_the_persisted_clock(client,monkeypatch):
+    post(client,action="cancel")
+    monkeypatch.setattr(module,"monitoring_mode",lambda:"external_scheduler")
+    async def failed(): raise RuntimeError("unavailable")
+    monkeypatch.setattr(module,"wake_scheduler",failed)
+    response=client.post("/api/action",json={"action":"clock","running":True})
+    assert response.status_code==503
+    s=client.get("/api/state").json()
+    assert not s["clock_control"]["running"] and module.store.scheduled_count()==0
+    assert s["actions"][-1]["tool"]=="clock.wake_failed"
+
+
+async def test_scheduler_wake_is_authenticated_bounded_and_does_not_redirect(monkeypatch):
+    monkeypatch.setenv("REVSlot_SCHEDULER_WAKE_URL","https://branch-clock.compute.c-7.us-east-2.aws.neon.tech/wake")
+    monkeypatch.setenv("CRON_SECRET","ci-only-scheduler-secret")
+    calls=[]
+    def responder(request):
+        calls.append(request)
+        return httpx.Response(202,json={"accepted":True})
+    real_client=httpx.AsyncClient
+    monkeypatch.setattr(monitoring.httpx,"AsyncClient",lambda **kw:real_client(transport=httpx.MockTransport(responder),**kw))
+    await monitoring.wake_scheduler()
+    assert len(calls)==1 and calls[0].headers["authorization"]=="Bearer ci-only-scheduler-secret"
+    monkeypatch.setenv("REVSlot_SCHEDULER_WAKE_URL","https://example.com/wake")
+    with pytest.raises(RuntimeError):await monitoring.wake_scheduler()
+    assert len(calls)==1
 
 
 def test_scheduler_requires_secret_and_durable_serverless_storage(client,monkeypatch):

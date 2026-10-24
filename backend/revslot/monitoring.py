@@ -7,6 +7,8 @@ import logging
 import math
 import os
 import time
+from urllib.parse import urlsplit
+import httpx
 from datetime import datetime,timedelta
 from .agents.orchestrator import recover
 from .audit import append_action
@@ -23,6 +25,20 @@ def monitoring_mode():
     if os.getenv("REVSlot_EXTERNAL_TICK")=="1" and os.getenv("DATABASE_URL") and os.getenv("CRON_SECRET"):
         return "external_scheduler"
     return "manual"
+
+
+async def wake_scheduler():
+    """Bounded authenticated wake-up; SQL, not an isolate, owns the job."""
+    target=os.getenv("REVSlot_SCHEDULER_WAKE_URL","")
+    url=urlsplit(target)
+    if (url.scheme!="https" or not (url.hostname or "").endswith(".aws.neon.tech")
+        or url.path!="/wake" or url.username or url.password or url.query or url.fragment):
+        raise RuntimeError("Scheduler wake URL is not configured")
+    async def call():
+        async with httpx.AsyncClient(timeout=4,follow_redirects=False) as client:
+            response=await client.post(target,headers={"Authorization":"Bearer "+os.getenv("CRON_SECRET","")})
+            if response.status_code!=202: raise RuntimeError("Scheduler wake was rejected")
+    await asyncio.wait_for(call(),timeout=4.5)
 
 
 def has_active(state):
