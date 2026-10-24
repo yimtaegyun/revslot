@@ -4,9 +4,11 @@
 
 Cancelled time. Recovered value.
 
-[Source](https://github.com/yimtaegyun/revslot) · [Architecture](docs/ARCHITECTURE.md) · [Evaluation](docs/EVALUATION_REPORT.md) · [Demo script](demo/VIDEO_SCRIPT.md) · [Submission draft](demo/DEVPOST.md)
+[Source](https://github.com/yimtaegyun/revslot) · [Browser evidence](demo/README.md) · [Architecture](docs/ARCHITECTURE.md) · [Evaluation](docs/EVALUATION_REPORT.md) · [Demo script](demo/VIDEO_SCRIPT.md) · [Submission draft](demo/DEVPOST.md)
 
-**Build status:** local API flow and frontend production build verified. Live Nebius/NVIDIA inference, Tavily, public deployment, video and submission remain gates. The no-key mode is an explicitly labeled **deterministic preview**, not live AI or a finished eligible submission. [Current state](PROJECT_STATE.md).
+**Build status:** [CI passed](https://github.com/yimtaegyun/revslot/actions/runs/40064620041): 34 Python tests, production build/TypeScript and 3 complete browser tests. Nine actual screenshots and the raw browser recording are included. Live Nebius/NVIDIA inference, Tavily, public deployment and the final submission take remain gates. The no-key mode is an explicitly labeled **deterministic preview**, not live AI or a finished eligible submission. [Current state](PROJECT_STATE.md).
+
+![Actual browser result: sandbox booking records $56 and 70% of slot value](demo/screenshots/hero-recovered.png)
 
 ## Problem and existing solutions
 
@@ -101,6 +103,8 @@ Next.js, TypeScript, Tailwind, shadcn button, Lucide; FastAPI, Pydantic, LangGra
 No merchant pilot, real calendar/POS, notifications or payments. Demo monitoring uses a browser heartbeat; durable unattended monitoring needs scheduling/queues. Production merchant authentication, abuse quotas, calibrated causal elasticity and incremental-revenue experiments remain future work. Hosted `/tmp` SQLite can reset on cold start; use PostgreSQL for durable judging access.
 
 Next: verified runtime/public demo → opt-in beauty/wellness pilot → calendar/POS adapters → fitness/PT → restaurant/hospitality. Medical appointments remain excluded. Performance-fee/SaaS terms are hypotheses; no unsupported percentage is selected. [Competitive answers](docs/COMPETITIVE_FAQ.md).
+
+Portfolio materials: [Korean project/resume/STAR](docs/PORTFOLIO_KO.md), [detailed development article](docs/BLOG_KO.md), [deliverable index](DELIVERABLES.md).
 
 ## License
 

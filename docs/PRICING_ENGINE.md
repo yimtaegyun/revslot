@@ -2,6 +2,8 @@
 
 Discount candidates: 0%, 10%, 15%, 20%, 25%, 30%, 35%, 40%. Integer-cent expected revenue is `price × remaining-horizon fill probability`; ties favor smaller discounts. This is myopic optimization, not guaranteed lifetime revenue maximization.
 
+Natural fill uses zero recovery exposure (radius proxy zero). The chart's 0%-discount candidate still includes the chosen recovery audience/channel exposure. Its probability can therefore exceed the no-action natural-fill probability; full-price exposure is an intervention too.
+
 Price must exceed max(floor, cost + minimum margin); discount cannot exceed cap. Expired slots are blocked. Natural full-price probability ≥65% restricts candidates to full price. Autopilot, review threshold, support and repricing are separate execution gates. No model-generated price or customer identity can override them.
 
 The forecast is a complementary-log-log Bernoulli fit with a fixed log(hours) offset. Probability approaches zero as time approaches zero, allowing coherent interval arrival hazards. Features: popularity, waitlist count, bounded context, discount, prior-offer stage, discount/stage interaction and reach proxy.

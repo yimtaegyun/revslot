@@ -1,0 +1,67 @@
+{
+  "commit": "574de1d52a5bc8d185a20df08e9ca7e45833e88e",
+  "ci_url": "https://github.com/yimtaegyun/revslot/actions/runs/40064620041",
+  "conclusion": "success",
+  "log_excerpt": [
+    "2026-10-24T05:01:57.0121184Z 34 passed in 0.67s",
+    "2026-10-24T05:03:19.3177932Z   \u2713  1 [chromium] \u203a e2e/demo.spec.ts:8:1 \u203a cancellation, autonomous reprice, sandbox booking and merchant revenue (6.8s)",
+    "2026-10-24T05:03:20.2308916Z   \u2713  2 [chromium] \u203a e2e/demo.spec.ts:43:1 \u203a human approval gate and no below-floor override (904ms)",
+    "2026-10-24T05:03:20.7951043Z   \u2713  3 [chromium] \u203a e2e/demo.spec.ts:53:1 \u203a mobile viewport supports the marketplace and navigation (554ms)",
+    "2026-10-24T05:03:20.8452464Z   3 passed (11.7s)"
+  ],
+  "provider_mode": "rules_preview",
+  "live_nebius_verified": false,
+  "live_tavily_verified": false,
+  "artifacts": [
+    {
+      "path": "demo/screenshots/01-merchant-ready.png",
+      "sha256": "1b151aabd5383dcc6261d3078a3bf4629ddd8bc997cd0484038515ab3c2e4ec1",
+      "size": 208630
+    },
+    {
+      "path": "demo/screenshots/02-agent-first-offer.png",
+      "sha256": "4b5820331b27c126a3687599884e99e5c9f8be0298535d276d95ad31f0105288",
+      "size": 245234
+    },
+    {
+      "path": "demo/screenshots/03-reprice.png",
+      "sha256": "b534e8900cde48cfb4eff9a21abb5a876b81c69f0ab7812a60617d09ff840663",
+      "size": 249048
+    },
+    {
+      "path": "demo/screenshots/04-marketplace.png",
+      "sha256": "6ddfbb3c9e0ff855361aa02266b17ad7c266846ed06504ed7aca7e7e17aab5dc",
+      "size": 177048
+    },
+    {
+      "path": "demo/screenshots/05-recovered.png",
+      "sha256": "2df3daf5481354b47482038744eec39a753812044c51b35b102983456254db74",
+      "size": 263387
+    },
+    {
+      "path": "demo/screenshots/06-analytics.png",
+      "sha256": "0d0cd0f01876ffcf050a4dc124901044204d7456f530963c5a1091f0180caca3",
+      "size": 282159
+    },
+    {
+      "path": "demo/screenshots/07-guardrails.png",
+      "sha256": "f1e1c5c7f3a5e2dd994b3c733cf09a42f1b41fd039e6e57952107c914cfcf6de",
+      "size": 152415
+    },
+    {
+      "path": "demo/screenshots/08-mobile.png",
+      "sha256": "0ea098dd99595db57dbc7d759e9d89e8123f3b7fa37fd5c55a995590146140d0",
+      "size": 125573
+    },
+    {
+      "path": "demo/screenshots/09-integrations.png",
+      "sha256": "4c0291345050535df22014699f3125df40d09d452f17c1aa8a7904cd765726b3",
+      "size": 146293
+    },
+    {
+      "path": "demo/browser-workflow.webm",
+      "sha256": "c413c23d9088c3535065c30c54406bd893893e547258d34084460244fa99d4f7",
+      "size": 761311
+    }
+  ]
+}

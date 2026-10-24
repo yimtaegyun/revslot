@@ -2,18 +2,17 @@
 
 Updated: 2026-10-24 Asia/Seoul.
 
-- Current phase: Full local API flow implemented; frontend production build passes; feature freeze begins. Final documentation and publishing preparation in progress.
-- Completed: official rules/FAQ/updates; overseas 20 awarded projects; domestic official cases; 10-competitor matrix; 24 naming candidates; public GitHub repository created at https://github.com/yimtaegyun/revslot . Next.js/Tailwind/shadcn UI, FastAPI/Pydantic/LangGraph recovery, deterministic price/match/policy tools, audit hash chain, SSE/polling, accelerated clock, approval, booking, metrics and analytics implemented.
-- Data: 12,000 synthetic booking events, 3 merchants, 6 services, 180 days; chronological model holdout; independent-seed final simulation after policy freeze. Development results retained, including a failed initial comparison.
-- In progress: GitHub CI browser evidence and final delivery verification. README/evaluation/demo/submission/portfolio package and all 107 files are pushed.
-- Blocked: no NEBIUS_API_KEY or TAVILY_API_KEY; Vercel account-scope access rejected (403) when connecting storage. The exposed connector has no authorize_team_access operation. Do not claim live inference or publication.
-- Next 5: final regression and source audit; finish reviewable docs/demo script; push all source to GitHub; obtain runtime secrets/account access; deploy, browser-test, capture live video and finalize submission.
-- Known limitations: managed browser preview image lacks Python/uvicorn and excludes the local virtualenv, so full UI browser QA is not yet verified. Local SQLite works; Vercel cold starts need PostgreSQL for durable sessions. Synthetic uncertainty/price elasticity are not production validated. No real SMS/payment/calendar integration.
-- Credentials needed: Nebius Token Factory, Tavily optional bonus; Vercel account-scope access; persistent PostgreSQL connection for durable hosted state; final Devpost terms acceptance and public YouTube upload.
-- Deployment URLs: none. Vercel project prj_BWTzn2W1WebpfwmOVUldqvTxOC3y exists under team_YKG2g9hfvRoFYSxyM0Oc5wzn; scope access is blocked. No paid plan selected.
-- Submission status: not submitted; key eligibility and live/demo/video gates remain open.
-- Last tests: 34 passed after audit/provider-action/timeout refinements. Next.js 16.3.4 production build and TypeScript passed. CLI actual scenario: $80 → $64 at 20% → $56 at 30%; radius 3→6km; 12→24 opt-in profiles; booking updates recovered revenue to $56 and recovery to 70%.
+- Current phase: Feature freeze; implementation, reproducible evaluation and full browser QA verified. Final evidence publication and external integration gates.
+- Completed: official rules/FAQ/updates, 20 overseas awarded projects, domestic official cases, 10-competitor matrix, 24 naming candidates; public MIT GitHub repository https://github.com/yimtaegyun/revslot . Next.js/Tailwind/shadcn frontend; FastAPI/Pydantic/LangGraph; deterministic pricing/matching/policy; revision CAS, audit, SSE/polling, clock, approval, reservation and analytics.
+- Data: 12,000 synthetic events /180 days /3 merchants /6 services; temporal holdout; independent seed 20261030 /1,000 evaluation cancellations. Negative results retained. Agent gross revenue/slot $53.17 vs fixed20 $48.70; average discount 22.95% vs20%; unnecessary discount100% for both. No real uplift claim.
+- Verified source: application and capture code at main commit 574de1d52a5bc8d185a20df08e9ca7e45833e88e. CI https://github.com/yimtaegyun/revslot/actions/runs/40064620041 succeeded: 34 Python tests, production build/TypeScript and3 Chromium tests. Local Git history restored to match published ancestry; no force-push needed.
+- Evidence package: final documentation,9 inspected screenshots plus README crop, the raw7.64-second browser recording, rendering source and detailed portfolio article. A1920x1080 /170-second silent review film is saved and delivered; it retains rules-preview disclosure throughout and is not the final eligible take.
+- Blocked: no NEBIUS_API_KEY or TAVILY_API_KEY; Vercel account-scope authorization403 for storage linking and existing-project GET. The authorization tool became available; a single-use consent link was generated and shown to the user. Grant is not yet verified. Do not claim live inference or public deployment.
+- Next5: obtain server-side keys and Vercel scope access; verify actual Token Factory catalogue+NVIDIA inference and optional Tavily; deploy existing project with durable storage; verify anonymous browser flow and record final live video; finalize observed sponsor feedback, public YouTube and user-accepted Devpost submission.
+- Known limitations: synthetic forecast/elasticity not market validated; support heuristic not calibrated; browser heartbeat controls demo monitoring; no real SMS/payment/POS/calendar integration, production auth or abuse quotas. Docker/PostgreSQL remain unexecuted. Vercel /tmp SQLite is ephemeral.
+- Credentials needed: Nebius Token Factory; optional Tavily bonus; Vercel scope yimtaegyun0217-7000; durable PostgreSQL connection or stable single-instance backend; later YouTube/Devpost account access and user terms acceptance. Never paste keys into public source or client UI.
+- Deployment URLs: none. Existing Vercel project prj_BWTzn2W1WebpfwmOVUldqvTxOC3y /team_YKG2g9hfvRoFYSxyM0Oc5wzn. No paid plan selected.
+- Submission status: not submitted, not fully eligible; runtime/hosting/final-video/terms gates open.
+- Actual browser scenario: $80 cancellation -> $64/20%/12 profiles/3km -> +20 demo minutes unsold -> $56/30%/24 profiles/6km -> booking -> $56 gross recovery /70% /20 demo minutes. Natural fill is model-derived (23% rounded initially), not the brief's18%.
 - Deadline: 2026-10-31 02:00 KST. Internal target: 2026-10-30 20:00 KST.
-
-- Source publication: main commit ec93ed4a23ba161cd356eb169addaa9ccbaa6e41; 107 files. GitHub UI verified public, code and MIT license visible. CI workflow supplied; actual run status pending.
-- Reminder: existing competition tracker now explicitly includes this hackathon and Oct30 08:00 KST submission check.
+- Reminder: existing combined competition tracker includes the hackathon and Oct30 08:00 KST submission check; no duplicate automation created.

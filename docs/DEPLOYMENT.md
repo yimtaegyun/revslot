@@ -1,6 +1,8 @@
 # Deployment and access status
 
-The requested Vercel project was created: `prj_BWTzn2W1WebpfwmOVUldqvTxOC3y`, account `team_YKG2g9hfvRoFYSxyM0Oc5wzn`. A storage connection request returned **403 account-scope access denied**. No storage was created and no paid plan was selected. The suggested `authorize_team_access` recovery operation is not exposed in this session. App permission inspection showed the default low-risk permission, which is separate from Vercel account-scope authorization.
+The requested Vercel project was created: `prj_BWTzn2W1WebpfwmOVUldqvTxOC3y`, account `team_YKG2g9hfvRoFYSxyM0Oc5wzn`. A storage connection request returned **403 account-scope access denied**. No storage was created and no paid plan was selected. The recovery operation was initially unavailable, then became exposed and generated a single-use10-minute consent link, shown to the user. Access is not granted merely by generating that link. App permission inspection showed the default low-risk permission, which is separate from Vercel account-scope authorization.
+
+After full browser CI passed, reading this exact existing project under the same team also returned403 for scope `yimtaegyun0217-7000`. This confirms the blocker is account-scope access, not merely a storage feature. No deployment mutation was attempted after target verification failed. The returned recovery asks for team authorization. After the user approves the supplied consent link, retry this exact project GET on the same connection before deploying. Generate a new official link only if the old one expired; do not publish ephemeral consent URLs in source.
 
 Do not create a duplicate project. After access is granted, link the existing project to `yimtaegyun/revslot` and deploy `main`. Vercel Services is Beta. `vercel.json` routes API calls to FastAPI and other paths to Next.js. Preserve the original API prefix.
 
