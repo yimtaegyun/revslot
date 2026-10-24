@@ -1,0 +1,5 @@
+{
+  "name": "revslot",
+  "private": true,
+  "scripts": {"dev":"node scripts/dev.mjs", "test":".venv/bin/python -m pytest -q"}
+}

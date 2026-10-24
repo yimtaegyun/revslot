@@ -1,0 +1,18 @@
+export type View='overview'|'recoveries'|'marketplace'|'analytics'|'guardrails'|'integrations';
+export type Policy={autopilot:boolean;min_price_cents:number;max_discount:number;min_margin_cents:number;max_radius_km:number;allow_auto_reprice:boolean;approval_above:number;confidence_threshold:number};
+export type Slot={id:string;service_id:string;merchant_id:string;staff_id:string;start:string;original_price_cents:number;cost_cents:number;duration:number;popularity:number;waitlist_size:number;status:'booked'|'recovering'|'approval'|'recovered'|'expired'};
+export type Merchant={id:string;name:string;category:string;area:string;accent:string};
+export type Service={id:string;merchant_id:string;name:string;category:string;duration:number;price_cents:number;cost_cents:number};
+export type Candidate={discount:number;price_cents:number;fill_probability:number;expected_revenue_cents:number;allowed:boolean;rejection:string|null};
+export type Decision={selected:Candidate|null;candidates:Candidate[];natural_fill:number;confidence:number;explanation:string;model_version:string};
+export type Offer={slot_id:string;revision:number;price_cents:number;discount:number;headline:string;message:string;audience_count:number;radius_km:number;channel:string;published:boolean};
+export type Action={id:number;slot_id:string|null;timestamp:string;simulated_at:string;agent:string;tool:string;title:string;detail:string;policy_status:string;outcome:string;digest:string};
+export type Outcome={original_cents:number;recovered_cents:number;discount_cost_cents:number;recovery_rate:number;time_to_recovery_minutes:number};
+export type Provider={configured?:boolean;verified?:boolean;mode?:string;model?:string;latency_ms?:number;status?:string};
+export type State={run_id:string;revision:number;synthetic:true;clock:string;elapsed_minutes:number;policy:Policy;merchants:Merchant[];services:Service[];slots:Slot[];offers:Record<string,Offer>;decisions:Record<string,Decision>;actions:Action[];outcomes:Record<string,Outcome>;bookings:{slot_id:string;price_cents:number;id:string}[];attempts:{slot_id:string;attempt:number;decision:Decision;provider:string}[];contexts:Record<string,{status:string;note:string;sources:{title:string;url:string;snippet:string}[]}>;integrations:Record<string,Provider>;provider_config:Record<string,Provider>;durability:string;metrics:{at_risk_cents:number;recovered_cents:number;recovery_rate:number;recovered_slots:number;average_discount:number;average_time_minutes:number;agent_actions:number;cancelled_potential_cents:number}};
+export type Strategy={strategy:string;fill_rate:number;recovered_revenue:number;revenue_per_cancelled_slot:number;average_discount:number;average_time_minutes:number;margin_preservation:number;unnecessary_discount_rate:number};
+export type Evaluation={synthetic:true;seed:number;scenarios:number;strategies:Strategy[];paired_revenue_delta_vs_fixed20:{mean:number;bootstrap95:number[]};elasticity_sensitivity:Record<string,number>[];data_card:{booking_events:number;days:number;test_auc:number;test_brier:number;baseline_brier:number;test_rows:number;source_sha256:string};definitions:Record<string,string>;limitations:string[]};
+export const money=(cents:number)=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:cents%100?2:0}).format(cents/100);
+export const percent=(x:number)=>`${Math.round(100*x)}%`;
+export const clock=(s:string)=>{const h=Number(s.slice(11,13));return `${h%12||12}:${s.slice(14,16)} ${h>=12?'PM':'AM'}`;};
+export const minutesLeft=(slot:Slot,state:State)=>Math.max(0,Math.round((Date.parse(slot.start)-Date.parse(state.clock))/60000));

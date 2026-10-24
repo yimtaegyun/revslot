@@ -1,0 +1,189 @@
+import asyncio
+import json
+import os
+import re
+import secrets
+from datetime import datetime,timedelta
+from pathlib import Path
+from fastapi import FastAPI,Request,Response,HTTPException
+from fastapi.responses import StreamingResponse
+from .schemas import ActionRequest, PolicyConfig, Booking, BookingOutcome
+from .seed import initial_state
+from .storage import Store,Conflict,Missing
+from .pricing import remaining_hours,optimize
+from .providers import provider_status
+from .audit import append_action,verify_actions
+from .agents.orchestrator import recover,get_slot
+
+app=FastAPI(title="Revslot Recovery API",version="0.1.0",description="Synthetic sandbox only. No real payments or outbound messages.")
+store=Store()
+COOKIE="revslot_run"
+
+
+@app.exception_handler(Conflict)
+async def conflict_handler(request,exc):
+    from fastapi.responses import JSONResponse
+    return JSONResponse({"detail":str(exc)},status_code=409)
+
+
+@app.exception_handler(Missing)
+async def missing_handler(request,exc):
+    from fastapi.responses import JSONResponse
+    return JSONResponse({"detail":str(exc)},status_code=404)
+
+
+def run_id(request):
+    rid=request.cookies.get(COOKIE,"")
+    if not re.fullmatch(r"[0-9a-f]{40}",rid): raise HTTPException(401,"Load a demo scenario first")
+    return rid
+
+
+def check_origin(request):
+    origin=request.headers.get("origin")
+    if origin and origin.split("://",1)[-1]!=request.headers.get("x-forwarded-host",request.headers.get("host")):
+        raise HTTPException(403,"Cross-origin mutation rejected")
+
+
+def public_state(state):
+    state=json.loads(json.dumps(state))
+    # IDs/preferences are fictional, but reduce unnecessary client payload regardless.
+    state.pop("customers",None)
+    state["provider_config"]=provider_status()
+    state["durability"]=store.durability
+    cancelled=[s for s in state["slots"] if s["status"]!="booked"]
+    recovered=sum(b["price_cents"] for b in state["bookings"])
+    potential=sum(s["original_price_cents"] for s in cancelled)
+    outcomes=list(state["outcomes"].values())
+    state["metrics"]={"at_risk_cents":sum(s["original_price_cents"] for s in cancelled if s["status"] in {"recovering","approval"}),
+        "recovered_cents":recovered,"recovery_rate":recovered/potential if potential else 0,
+        "recovered_slots":len(outcomes),"average_discount":sum(o["discount_cost_cents"]/o["original_cents"] for o in outcomes)/len(outcomes) if outcomes else 0,
+        "average_time_minutes":sum(o["time_to_recovery_minutes"] for o in outcomes)/len(outcomes) if outcomes else 0,
+        "agent_actions":len(state["actions"]),"cancelled_potential_cents":potential}
+    return state
+
+
+@app.get("/api/health")
+async def health():
+    return {"status":"ok","synthetic":True,"providers":provider_status(),"durability":store.durability,
+            "submission_ready":False,"note":"Authenticated inference evidence, public video, and final submission remain external gates."}
+
+
+@app.post("/api/session")
+async def session(request:Request,response:Response):
+    check_origin(request)
+    state=initial_state(secrets.token_hex(20))
+    store.create(state)
+    response.set_cookie(COOKIE,state["run_id"],httponly=True,secure=request.url.scheme=="https" or request.headers.get("x-forwarded-proto")=="https",samesite="lax",max_age=86400,path="/")
+    response.headers["Cache-Control"]="no-store"
+    return public_state(state)
+
+
+@app.get("/api/state")
+async def state(request:Request,response:Response):
+    response.headers["Cache-Control"]="no-store"
+    return public_state(store.load(run_id(request)))
+
+
+@app.post("/api/action")
+async def action(body:ActionRequest,request:Request,response:Response):
+    check_origin(request)
+    state=store.load(run_id(request)); expected=state["revision"]
+    try: slot=get_slot(state,body.slot_id)
+    except StopIteration: raise HTTPException(404,"Slot not found")
+    if body.action=="cancel":
+        event=body.event_id or f"cancel:{slot['id']}"
+        if event in state["cancellation_ids"]: return public_state(state)
+        if slot["status"]!="booked": raise Conflict("Appointment was already cancelled")
+        if remaining_hours(slot,state["clock"])<=0: raise Conflict("Appointment has already started")
+        slot["status"]="recovering"; state["cancellation_ids"].append(event)
+        append_action(state,"Orchestrator","cancellation.receive","Cancellation detected",f"{slot['id']}: ${slot['original_price_cents']/100:.2f} of expiring inventory.",slot_id=slot["id"])
+        state=await recover(state,slot["id"])
+    elif body.action=="advance":
+        state["clock"]=(datetime.fromisoformat(state["clock"])+timedelta(minutes=body.minutes)).isoformat()
+        state["elapsed_minutes"]+=body.minutes
+        for current in state["slots"]:
+            if current["status"] not in {"recovering","approval"}: continue
+            hours=remaining_hours(current,state["clock"])
+            if hours<=0:
+                current["status"]="expired"
+                if current["id"] in state["offers"]: state["offers"][current["id"]]["published"]=False
+                append_action(state,"Recovery operator","clock.expire","Slot expired","The appointment start has passed. Booking and offers are closed.",slot_id=current["id"])
+            elif state["elapsed_minutes"]-state["last_evaluated"].get(current["id"],0)>=20:
+                append_action(state,"Recovery operator","monitor.check","No booking — reassessing",f"{body.minutes} simulated minutes advanced; observing an actual unsold sandbox slot.",slot_id=current["id"])
+                stage=sum(a["slot_id"]==current["id"] for a in state["attempts"])
+                state=await recover(state,current["id"],stage)
+    elif body.action=="approve":
+        offer=state["offers"].get(slot["id"])
+        if not offer or offer["revision"]!=body.offer_revision: raise Conflict("Offer changed; review the latest revision")
+        if slot["status"]!="approval" or remaining_hours(slot,state["clock"])<=0: raise Conflict("No current approvable offer")
+        floor=max(state["policy"]["min_price_cents"],slot["cost_cents"]+state["policy"]["min_margin_cents"])
+        if offer["price_cents"]<floor or offer["discount"]>state["policy"]["max_discount"]+1e-8: raise Conflict("Offer no longer satisfies policy")
+        offer["published"]=True; slot["status"]="recovering"
+        append_action(state,"Merchant","approval.confirm","Merchant approved offer",f"Explicit approval of revision {offer['revision']} at ${offer['price_cents']/100:.2f}.",slot_id=slot["id"])
+        attempt=next(a for a in reversed(state["attempts"]) if a["slot_id"]==slot["id"])
+        eligible={c["id"] for c in state["customers"] if c["notifications_opt_in"]}
+        notifications=state.setdefault("notifications",[])
+        existing={(n["customer_id"],n["slot_id"],n["offer_revision"]) for n in notifications}
+        for cid in attempt["audience_ids"]:
+            if cid in eligible and (cid,slot["id"],offer["revision"]) not in existing:
+                notifications.append({"customer_id":cid,"slot_id":slot["id"],"offer_revision":offer["revision"],"price_cents":offer["price_cents"],"channel":"sandbox_inbox"})
+    elif body.action=="book":
+        offer=state["offers"].get(slot["id"])
+        if not offer or offer["revision"]!=body.offer_revision: raise Conflict("This price changed. Refresh and confirm the new price.")
+        if slot["status"]!="recovering" or not offer["published"] or remaining_hours(slot,state["clock"])<=0:
+            raise Conflict("Slot is no longer available")
+        floor=max(state["policy"]["min_price_cents"],slot["cost_cents"]+state["policy"]["min_margin_cents"])
+        if offer["price_cents"]<floor or offer["discount"]>state["policy"]["max_discount"]+1e-8: raise Conflict("Policy changed; offer withdrawn")
+        slot["status"]="recovered"; offer["published"]=False
+        booking=Booking(id=secrets.token_hex(8),slot_id=slot["id"],customer_id=body.customer_id,
+                        price_cents=offer["price_cents"],offer_revision=offer["revision"],simulated_at=state["clock"])
+        state["bookings"].append(booking.model_dump())
+        first=next(a for a in state["actions"] if a["tool"]=="cancellation.receive" and a["slot_id"]==slot["id"])
+        minutes=round((datetime.fromisoformat(state["clock"])-datetime.fromisoformat(first["simulated_at"])).total_seconds()/60)
+        state["outcomes"][slot["id"]]=BookingOutcome(original_cents=slot["original_price_cents"],recovered_cents=offer["price_cents"],
+            discount_cost_cents=slot["original_price_cents"]-offer["price_cents"],recovery_rate=offer["price_cents"]/slot["original_price_cents"],time_to_recovery_minutes=minutes).model_dump()
+        append_action(state,"Outcome analyst","booking.commit","Revenue recovered",f"Sandbox booking confirmed at ${offer['price_cents']/100:.2f}; {minutes} simulated minutes to fill. This is booked gross revenue, not proven incremental lift.",slot_id=slot["id"])
+    elif body.action=="policy":
+        state["policy"]=body.policy.model_dump()
+        append_action(state,"Merchant","policy.update","Guardrails updated","Merchant policy changed. Existing offers are revalidated before further booking.")
+        for current in state["slots"]:
+            if current["status"] in {"recovering","approval"}:
+                state=await recover(state,current["id"],sum(a["slot_id"]==current["id"] for a in state["attempts"]))
+    elif body.action=="optout":
+        for customer in state["customers"]:
+            if customer["id"]==body.customer_id: customer["notifications_opt_in"]=False
+        append_action(state,"Consumer","notifications.optout","Notification preference saved","This synthetic profile is excluded from future direct notifications.")
+    store.save(state,expected)
+    response.headers["Cache-Control"]="no-store"
+    return public_state(state)
+
+
+@app.get("/api/audit")
+async def audit(request:Request):
+    state=store.load(run_id(request))
+    return {"synthetic":True,"actions":state["actions"],"hash_chain_valid":verify_actions(state["actions"]),
+            "note":"Hash chain detects accidental modification; it is not an externally notarized audit."}
+
+
+@app.get("/api/evaluation")
+async def evaluation():
+    path=Path(__file__).parent/"data"/"evaluation.json"
+    if not path.exists(): raise HTTPException(503,"Run simulation/evaluate.py")
+    return json.loads(path.read_text())
+
+
+@app.get("/api/events")
+async def events(request:Request):
+    rid=run_id(request)
+    async def stream():
+        revision=-1
+        for _ in range(20):
+            if await request.is_disconnected(): break
+            try: state=store.load(rid)
+            except Missing: break
+            if state["revision"]!=revision:
+                revision=state["revision"]
+                yield f"event: state\ndata: {json.dumps(public_state(state))}\n\n"
+            else: yield ": heartbeat\n\n"
+            await asyncio.sleep(1)
+    return StreamingResponse(stream(),media_type="text/event-stream",headers={"Cache-Control":"no-store","X-Accel-Buffering":"no"})

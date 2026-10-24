@@ -1,0 +1,27 @@
+{
+  "version": "synthetic-hazard-v2",
+  "link": "complementary_log_log",
+  "intercept": -2.417759188733867,
+  "coefficients": [
+    1.0,
+    0.9531089793047471,
+    0.23863477500311006,
+    0.10526570130321129,
+    10.933900560461828,
+    -1.1044470355230827,
+    -0.8185414473448361,
+    0.22191212133630372
+  ],
+  "features": [
+    "log_hours",
+    "popularity",
+    "waitlist",
+    "context",
+    "discount",
+    "discount_stage",
+    "stage",
+    "radius"
+  ],
+  "synthetic": true,
+  "training_seed": 20261024
+}

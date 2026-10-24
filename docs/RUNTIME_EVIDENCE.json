@@ -1,0 +1,27 @@
+{
+  "checked_at_utc": "2026-10-24T04:25:27.469290+00:00",
+  "synthetic_connectivity_payload": true,
+  "configured": {
+    "nebius": {
+      "configured": false,
+      "verified": false
+    },
+    "tavily": {
+      "configured": false,
+      "verified": false
+    }
+  },
+  "nebius": {
+    "mode": "rules_preview",
+    "model": null,
+    "verified": false,
+    "latency_ms": 0
+  },
+  "tavily": {
+    "verified": false,
+    "status": "not_configured",
+    "source_count": 0
+  },
+  "core_runtime_gate_passed": false,
+  "no_credentials_or_reasoning_stored": true
+}
