@@ -32,6 +32,9 @@ Payment details and legally binding acceptance require direct user handling. Bro
 
 Continue secure Nebius login and server key; verify actual catalogue/model/context and latency; record final live-provider take; public YouTube under3min; observed sponsor feedback; user Devpost terms acceptance and actual submission. Deadline2026-10-31 02:00 KST, targetOct30 20:00 KST. Existing combined competition reminder is set; do not duplicate.
 
+## Latest financial verification
+User asked whether credit exhaustion can be configured to avoid automatic card charges. Checked current Token Factory billing, current documentation index, Services Agreement, Token Factory Supplemental Terms effective October22,2026 and AI Cloud budget documentation. Default Token Factory fees are postpaid; negative balance/threshold can trigger automatic card charging. No vendor-supported credit-only hard stop was verified. AI Cloud budgets expressly do not stop usage and are a separate product's alert feature. Do not rely on the older separate automatic-top-up page to claim current charging can be disabled. Current signed-in tab2, binding billingCheckTab, again shows uncompleted mandatory billing, no card and agreement unchecked. No charge, setting change, support contact or exception. Do not request card registration just to discover hidden settings or interpret this question as consent to postpaid use. Full sources and evidence boundary: docs/NEBIUS_ACCESS_AND_CREDITS.md.
+
 ## Truthful evaluation
 12,000 synthetic events /180days /3merchants /6services. Independent-seed1,000 cancellation comparison:$53.17 agent vs$48.70 fixed20 gross/slot; discount22.95% vs20%; unnecessary discount100% both. Preserve negative findings; no real uplift or minimum-discount claim. Actual representative$80→$64→$56→$56/70% is a calculated sandbox scenario. Natural fill initially23% rounded, not the brief's illustrative18%.
 

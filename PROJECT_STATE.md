@@ -24,6 +24,8 @@ No Nebius or Tavily server key. Google/email authentication and creation of Nebi
 
 Latest continuation: resetting the stalled browser client restored access. A fresh signed-in Token Factory page again shows default-project and the uncompleted Billing details form: identity/address blank, no card, agreement unchecked. The user can now take over that exact page. No financial or legal action was performed. Production Vercel metadata still shows no NEBIUS_API_KEY or TAVILY_API_KEY. Do not repeat authentication or treat general permission as completed billing.
 
+Credit-exhaustion check: the user asked whether exhausting free credits can avoid automatic card charges. Current Token Factory terms effective October22 specify default postpaid fees; billing documentation allows automatic negative-balance/threshold charges. No provider-side zero-overage hard stop was verified. AI Cloud budgets are alerts only and do not establish a Token Factory cap. The current incomplete billing page exposes no such setting; no card, agreement or payment was submitted. Do not interpret this inquiry as consent to postpaid usage. See docs/NEBIUS_ACCESS_AND_CREDITS.md.
+
 ## Next 5 Actions
 1. Have the user personally complete or decline the observed Nebius billing/card/Services Agreement step; the official $25 credit application is available but was not submitted. Confirm account activation and available credit before inference.
 2. Create/connect a user-authorized key only at the actual credential step, store only server-side, and verify actual /models plus NVIDIA Nemotron structured inference. Never request a secret in chat.

@@ -40,3 +40,20 @@ The user must personally review the billing details, card registration and Servi
 5. Record the final live-provider video and observed sponsor feedback before final submission.
 
 The [official FAQ](https://nebiusglobalaihackathon.devpost.com/details/faqs) says missing-country/credit issues are handled case by case by Nebius and that another inference provider does not satisfy the runtime requirement. No support message was sent and no exception was obtained.
+
+## Credit exhaustion and automatic charges — verified 2026-10-25 KST
+
+**Result:** no vendor-supported setting that guarantees credit-only usage with zero automatic card charges was verified. This is not proof that support cannot offer an account-specific arrangement.
+
+| Control/source | What the current official material establishes |
+|---|---|
+| [Token Factory billing](https://docs.tokenfactory.nebius.com/other-capabilities/billing-new) | Negative balances at month start or reaching the billing threshold can trigger automatic card charges; no credit-exhaustion hard-stop procedure is documented. |
+| [Token Factory Supplemental Terms §6.1](https://docs.nebius.com/legal/token-factory), effective October22,2026 | Default service fees are postpaid unless an Order Form specifies otherwise. |
+| [Nebius AI Cloud budgets](https://docs.nebius.com/signup-billing/budgets) | Budgets send alerts and do not stop/cap usage. This separate AI Cloud feature is not evidence of a Token Factory hard cap. |
+| [Current Token Factory documentation index](https://docs.tokenfactory.nebius.com/llms.txt) | Links to billing-new. The separate /other-capabilities/billing page describing automatic top-ups should not be treated as proof that turning top-ups off prevents current postpaid charges. |
+
+The signed-in account was checked again: default-project is present, but mandatory Billing details is still incomplete, with no card and the agreement unchecked. Settings beyond onboarding cannot be inspected without completing that financial/legal step. No such step was performed for this check.
+
+A server-side request/token budget can reduce application usage, but is not a provider-enforced account-wide billing guarantee. A payment-card block also does not erase incurred service fees; see [Services Agreement §9](https://docs.nebius.com/legal/agreement).
+
+Do not promise free-credit-only operation or tell the user to register a card merely to discover hidden settings. A definitive exception requires a provider-confirmed no-overage arrangement or a verifiable credit-exhaustion stop. No support inquiry was sent, no exception obtained and no billing setting changed.
