@@ -13,7 +13,7 @@ Checked 2026-10-25 Asia/Seoul. Live NVIDIA-on-Nebius inference remains a submiss
 | Server credentials | Current Vercel variable metadata contains database/scheduler settings; no NEBIUS_API_KEY or TAVILY_API_KEY |
 | Official credit application | Public project fields prepared; no personal fields submitted, no credit received |
 | Real inference | No authenticated catalogue or model response captured; rules-preview disclosure remains |
-| Latest browser | Empty inventory, then two operation timeouts; current page unavailable, no bot-block evidence |
+| Latest browser | Client reset restored access; fresh signed-in page confirms the incomplete billing form, ready for user takeover |
 
 Private account identifiers and onboarding screenshots are excluded from the repository.
 
