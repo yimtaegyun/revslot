@@ -1,6 +1,6 @@
 # Revslot project state
 
-Updated: 2026-10-25 Asia/Seoul. Feature freeze remains in force.
+Updated: 2026-10-26 Asia/Seoul. Feature freeze remains in force.
 
 ## Current Phase
 Public full-stack app, durable hosted state and browser-independent recovery monitoring are verified. Connect the required live Nebius/NVIDIA runtime, then record and submit the final entry.
@@ -17,6 +17,8 @@ Public full-stack app, durable hosted state and browser-independent recovery mon
 - README, architecture, screenshots, Devpost draft, Built With, script/shot list, portfolio/STAR/article and170s disclosed silent review film prepared. The review film is not the final eligible live-model video.
 
 ## In Progress
+Card-free access research completed; no verified self-service activation found. Two conditional avenues remain: Nebius-approved participant provisioning, or authorized access to an existing funded organization. The latter is documented collaboration, not a verified onboarding bypass or zero-cost guarantee. Support request prepared, not sent. See docs/CARD_FREE_ACCESS_RESEARCH.md.
+
 Connect live provider access using secure account flows; capture factual runtime evidence and final submission materials.
 
 ## Blocked
@@ -51,3 +53,6 @@ Not submitted and not fully eligible. Actual NVIDIA-on-Nebius inference, optiona
 CI https://github.com/yimtaegyun/revslot/actions/runs/40095746361 at d6a6a06a...:45 Python tests with PostgreSQL17 passed in1.19s;6 Node scheduler tests, production build/TypeScript and4 Chromium tests passed (23.7s). Local44 passed/1 PostgreSQL skipped. Anonymous production retention, authenticated wake, browser-independent repricing, booking, idle exit, SQL job count, forged-request rejection and current error/fatal scan all passed. Details: docs/NEON_DEPLOYMENT_EVIDENCE.json and docs/QA_REPORT.md.
 
 Latest continuation: anonymous GET /api/health returned200/ok, durability=postgres and monitoring_mode=external_scheduler; both live providers remain configured=false/verified=false and submission_ready=false. This read-only check does not re-prove a new booking or inference. Seven changed Markdown files passed relative-link and credential-pattern checks; no application code changed.
+
+## Workspace recovery checkpoint
+Workspace maintenance removed the original local checkout. The latest three checkpoint files were recovered from the exact public branch and expanded with two research/support files. This is a partial documentation checkpoint, not a restored executable repository. Public source and deployments were not deleted. Recover the existing repository before any code execution or editing; do not rebuild the product from scratch. No new application test or provider invocation was performed during this research.

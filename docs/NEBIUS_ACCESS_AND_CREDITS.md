@@ -57,3 +57,7 @@ The signed-in account was checked again: default-project is present, but mandato
 A server-side request/token budget can reduce application usage, but is not a provider-enforced account-wide billing guarantee. A payment-card block also does not erase incurred service fees; see [Services Agreement §9](https://docs.nebius.com/legal/agreement).
 
 Do not promise free-credit-only operation or tell the user to register a card merely to discover hidden settings. A definitive exception requires a provider-confirmed no-overage arrangement or a verifiable credit-exhaustion stop. No support inquiry was sent, no exception obtained and no billing setting changed.
+
+## Card-free route investigation — 2026-10-26 KST
+
+The [expanded research](CARD_FREE_ACCESS_RESEARCH.md) found no verified card-free self-service activation. Promo/Builders credits do not document a card waiver. Official organization invitations and scoped project keys are supported, but bypassing this account's personal onboarding via invitation is untested. Nebius participant provisioning remains a request, not an approved exception. A [support message](../demo/NEBIUS_SUPPORT_REQUEST.md) is prepared and unsent. No card, charge, invitation, grant or key was created.
